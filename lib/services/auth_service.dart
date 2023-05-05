@@ -19,7 +19,6 @@ class AuthService extends ChangeNotifier {
     String email,
     String password,
     String cpassword,
-    int cicleid,
     /*int courseId*/
   ) async {
     final Map<String, dynamic> authData = {
@@ -28,7 +27,6 @@ class AuthService extends ChangeNotifier {
       'email': email,
       'password': password,
       'c_password': cpassword,
-      'company_id': cicleid,
     };
     print(authData.toString());
 

@@ -70,15 +70,6 @@ class RegisterScreen extends StatelessWidget {
 class _RegisterForm extends StatelessWidget with InputValidationMixin {
   @override
   Widget build(BuildContext context) {
-    final ciclesProvider = Provider.of<GetCompanies>(context);
-    List<Companies> ciclos = ciclesProvider.getAllCompanies;
-    List<Companies> options = [];
-    if (ciclos.isNotEmpty) {
-      for (var i = 0; i < ciclos.length; i++) {
-        options.add(ciclos[i]);
-      }
-    }
-
     final registerForm = Provider.of<RegisterFormProvider>(context);
 
     return Form(
@@ -166,31 +157,6 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
               return null;
             },
           ),
-          DropdownButtonFormField<Companies>(
-            decoration: InputDecorations.authInputDecoration(
-                prefixIcon: Icons.view_week_outlined,
-                hintText: '',
-                labelText: 'Company'),
-            // value: selectedItem,
-            items: options
-                .map(
-                  (courseName) => DropdownMenuItem(
-                    value: courseName,
-                    child: Text(courseName.nameCompanie),
-                  ),
-                )
-                .toList(),
-            onChanged: (value) {
-              registerForm.cicleid = (value?.idCompanie.toInt())!;
-            },
-            validator: (cicle) {
-              if (isCicleValid(cicle)) {
-                return null;
-              } else {
-                return 'Select a companie';
-              }
-            },
-          ),
           const SizedBox(height: 30),
           MaterialButton(
               shape: RoundedRectangleBorder(
@@ -215,8 +181,7 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                           registerForm.surname,
                           registerForm.email,
                           registerForm.password,
-                          registerForm.cpassword,
-                          registerForm.cicleid);
+                          registerForm.cpassword);
                       if (errorMessage == null) {
                         Navigator.pushReplacementNamed(context, 'login');
                       } else {
