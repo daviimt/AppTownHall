@@ -1,6 +1,7 @@
 import 'package:townhall/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:townhall/screens/prueba.dart';
 
 import 'package:townhall/screens/screens.dart';
 import 'package:townhall/services/services.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
           'home': (_) => const HomeScreen(),
           'login': (_) => const LoginScreen(),
           'register': (_) => const RegisterScreen(),
-          //'catalog': (_) => const UserScreen(),
+          'user': (_) => const Prueba(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(

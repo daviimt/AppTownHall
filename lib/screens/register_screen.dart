@@ -80,6 +80,20 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
         children: [
           TextFormField(
             autocorrect: false,
+            keyboardType: TextInputType.text,
+            decoration: InputDecorations.authInputDecoration(
+                hintText: '', labelText: 'Username', prefixIcon: Icons.person),
+            onChanged: (value) => registerForm.username = value,
+            validator: (username) {
+              if (isTextValid(username)) {
+                return null;
+              } else {
+                return 'Name field cant be null';
+              }
+            },
+          ),
+          TextFormField(
+            autocorrect: false,
             keyboardType: TextInputType.name,
             decoration: InputDecorations.authInputDecoration(
                 hintText: '', labelText: 'Name', prefixIcon: Icons.person),
@@ -108,17 +122,17 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
           ),
           TextFormField(
             autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             decoration: InputDecorations.authInputDecoration(
-                hintText: 'john.doe@gmail.com',
-                labelText: 'Correo electrónico',
+                hintText: '12345678P',
+                labelText: 'DNI',
                 prefixIcon: Icons.alternate_email_rounded),
-            onChanged: (value) => registerForm.email = value,
-            validator: (email) {
-              if (isEmailValid(email)) {
+            onChanged: (value) => registerForm.dni = value,
+            validator: (dni) {
+              if (isDniValid(dni)) {
                 return null;
               } else {
-                return 'Enter a valid email address';
+                return 'Enter a valid DNI';
               }
             },
           ),
@@ -147,7 +161,6 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
                 hintText: '*******',
                 labelText: 'Password',
                 prefixIcon: Icons.lock_outline),
-            onChanged: (value) => registerForm.cpassword = value,
             validator: (value) {
               if (value != registerForm.password) {
                 return "The passwords don't match";
@@ -177,11 +190,11 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
 
                       //validar si el login es correcto
                       final String? errorMessage = await authService.createUser(
+                          registerForm.username,
                           registerForm.name,
                           registerForm.surname,
-                          registerForm.email,
-                          registerForm.password,
-                          registerForm.cpassword);
+                          registerForm.dni,
+                          registerForm.password);
                       if (errorMessage == null) {
                         Navigator.pushReplacementNamed(context, 'login');
                       } else {
@@ -222,14 +235,11 @@ class _RegisterForm extends StatelessWidget with InputValidationMixin {
 mixin InputValidationMixin {
   bool isTextValid(texto) => texto.length > 0;
 
-  bool isPasswordValid(password) => password.length > 6;
+  bool isPasswordValid(password) => password.length >= 4;
 
-  bool isCicleValid(cicle) => cicle != null;
-
-  bool isEmailValid(email) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  bool isDniValid(dni) {
+    String pattern = '[0-9]{8}[A-Za-z]{1}';
     RegExp regExp = RegExp(pattern);
-    return regExp.hasMatch(email);
+    return regExp.hasMatch(dni);
   }
 }

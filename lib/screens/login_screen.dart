@@ -67,16 +67,7 @@ class _LoginForm extends StatelessWidget {
                 hintText: 'john.doe@gmail.com',
                 labelText: 'Correo electrónico',
                 prefixIcon: Icons.alternate_email_rounded),
-            onChanged: (value) => loginForm.email = value,
-            validator: (value) {
-              String pattern =
-                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-              RegExp regExp = RegExp(pattern);
-
-              return regExp.hasMatch(value ?? '')
-                  ? null
-                  : 'El valor ingresado no luce como un correo';
-            },
+            onChanged: (value) => loginForm.username = value,
           ),
           const SizedBox(height: 30),
           TextFormField(
@@ -88,11 +79,6 @@ class _LoginForm extends StatelessWidget {
                 labelText: 'Contraseña',
                 prefixIcon: Icons.lock_outline),
             onChanged: (value) => loginForm.password = value,
-            validator: (value) {
-              return (value != null && value.length >= 6)
-                  ? null
-                  : 'La contraseña debe de ser de 6 caracteres';
-            },
           ),
           const SizedBox(height: 30),
           MaterialButton(
@@ -114,15 +100,15 @@ class _LoginForm extends StatelessWidget {
 
                     // validar si el login es correcto
                     final String? data = await authService.login(
-                        loginForm.email, loginForm.password);
+                        loginForm.username, loginForm.password);
                     final spliter = data?.split(',');
-
-                    if (spliter?[0] == 'a') {
+                    print(data);
+                    if (spliter?[0] == 'ROLE_ADMIN') {
                       Navigator.pushReplacementNamed(context, 'admin');
                       // ignore: unrelated_type_equality_checks
-                    } else if (spliter?[0] == 'u' && spliter?[1] == 0) {
+                    } else if (spliter?[0] == 'ROLE_USER' && spliter?[1] == 0) {
                       customToast('El usuario no esta activo', context);
-                    } else if (spliter?[0] == 'u') {
+                    } else if (spliter?[0] == 'ROLE_USER') {
                       Navigator.pushReplacementNamed(context, 'user');
                     } else {
                       customToast('Email or password incorrect', context);

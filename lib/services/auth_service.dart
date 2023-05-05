@@ -9,28 +9,28 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = 'semillero.allsites.es';
+  final String _baseUrl = 'localhost:8080';
   final storage = const FlutterSecureStorage();
 
   // Si retornamos algo, es un error, si no, todo bien!
   Future<String?> createUser(
+    String username,
     String firstname,
     String secondname,
-    String email,
+    String dni,
     String password,
-    String cpassword,
     /*int courseId*/
   ) async {
     final Map<String, dynamic> authData = {
+      'username': username,
       'firstname': firstname,
       'secondname': secondname,
-      'email': email,
+      'dni': dni,
       'password': password,
-      'c_password': cpassword,
     };
     print(authData.toString());
 
-    final url = Uri.http(_baseUrl, '/public/api/register', {});
+    final url = Uri.http(_baseUrl, '/register', {});
 
     final resp = await http.post(url,
         headers: {
@@ -63,15 +63,15 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
-  Future<String?> login(String email, String password) async {
+  Future<String?> login(String username, String password) async {
     final Map<String, dynamic> authData = {
-      'email': email,
+      'username': username,
       'password': password,
       // 'returnSecureToken': true
     };
 
-    final url = Uri.http(_baseUrl, '/public/api/login', {});
-
+    final url = Uri.http(_baseUrl, '/login', {});
+    print(url);
     final resp = await http.post(url,
         headers: {
           'Content-type': 'application/json',
@@ -79,9 +79,9 @@ class AuthService extends ChangeNotifier {
           "Authorization": "Some toke"
         },
         body: json.encode(authData));
-
+    print(resp);
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
+    print(decodedResp);
     if (decodedResp['success'] == true) {
       // Token hay que guardarlo en un lugar seguro
       // decodedResp['idToken'];
