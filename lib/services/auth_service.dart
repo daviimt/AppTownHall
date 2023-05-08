@@ -1,111 +1,91 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
-
-import 'package:townhall/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:http/http.dart' as http;
-
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = 'localhost:8080';
+  final String _baseUrl = '192.168.1.42:8080';
   final storage = const FlutterSecureStorage();
+  bool isLoading = true;
+  List<dynamic> Favs = [];
+  String passwordGlobal = '';
+  String usernameGlobal = '';
 
-  // Si retornamos algo, es un error, si no, todo bien!
-  Future<String?> createUser(
+  readToken() async {
+    return await storage.read(key: 'token') ?? '';
+  }
+
+  readId() async {
+    return await storage.read(key: 'id') ?? '';
+  }
+
+//REGISTER
+  Future<String?> register(
     String username,
-    String firstname,
-    String secondname,
-    String dni,
     String password,
-    /*int courseId*/
   ) async {
     final Map<String, dynamic> authData = {
       'username': username,
-      'firstname': firstname,
-      'secondname': secondname,
-      'dni': dni,
       'password': password,
     };
-    print(authData.toString());
 
-    final url = Uri.http(_baseUrl, '/register', {});
+    final encodedFormData = utf8.encode(json.encode(authData));
+    final url = Uri.http(_baseUrl, '/register');
 
     final resp = await http.post(url,
         headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          "Authorization": "Some token"
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: json.encode(authData));
+        body: encodedFormData);
+
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
     if (resp.statusCode == 200) {
-      //Or put here your next screen using Navigator.push() method
-      print('success');
-      String id = decodedResp['data']['id'].toString();
+      await storage.write(key: 'token', value: decodedResp['token']);
+      await storage.write(key: 'id', value: decodedResp['id'].toString());
 
-      VerifyService().isVerify(id);
+      return (resp.statusCode.toString());
     } else {
-      print('error');
+      return (resp.statusCode.toString());
     }
-
-    if (decodedResp['success'] == true) {
-      // Token hay que guardarlo en un lugar seguro
-      // decodedResp['idToken'];
-      await storage.write(key: 'token', value: decodedResp['data']['token']);
-      await storage.write(
-          key: 'name', value: decodedResp['data']['name'].toString());
-    } else {
-      return decodedResp['message'];
-    }
-    return null;
   }
 
-  Future<String?> login(String username, String password) async {
-    final Map<String, dynamic> authData = {
-      'username': username,
-      'password': password,
-      // 'returnSecureToken': true
-    };
+//LOGINS
+  Future<String?> login(String user, String password) async {
+    final Map<String, dynamic> authData = {'user': user, 'password': password};
+    usernameGlobal = user;
+    passwordGlobal = password;
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('http://192.168.1.42:8080/login'));
 
-    final url = Uri.http(_baseUrl, '/login', {});
-    print(url);
-    final resp = await http.post(url,
-        headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-          "Authorization": "Some toke"
-        },
-        body: json.encode(authData));
-    print(resp);
-    final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print(decodedResp);
-    if (decodedResp['success'] == true) {
-      // Token hay que guardarlo en un lugar seguro
-      // decodedResp['idToken'];
-      await storage.write(key: 'token', value: decodedResp['data']['token']);
-      await storage.write(
-          key: 'id', value: decodedResp['data']['id'].toString());
-      return decodedResp['data']['type'] +
+    request.fields['user'] = user;
+    request.fields['password'] = password;
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      String values = "";
+      await response.stream.transform(utf8.decoder).listen((value) {
+        values = value;
+      });
+
+      final Map<String, dynamic> decodedResp = json.decode(values);
+
+      await storage.write(key: 'token', value: decodedResp['token']);
+      await storage.write(key: 'id', value: decodedResp['id'].toString());
+
+      return decodedResp['role'] +
           ',' +
-          decodedResp['data']['actived'].toString();
+          response.statusCode.toString() +
+          ',' +
+          decodedResp['enabled'].toString();
     } else {
-      return decodedResp['message'];
+      return '' + ',' + response.statusCode.toString();
     }
   }
 
   Future logout() async {
-    await storage.delete(key: 'token');
+    await storage.deleteAll();
     return;
-  }
-
-  Future<String> readToken() async {
-    return await storage.read(key: 'token') ?? '';
-  }
-
-  Future<String> readId() async {
-    return await storage.read(key: 'id') ?? '';
   }
 }
