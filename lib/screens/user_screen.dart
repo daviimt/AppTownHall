@@ -1,4 +1,4 @@
-/* import 'package:townhall/Models/models.dart';
+import 'package:townhall/Models/models.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -14,10 +14,8 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  final articleService = ArticleService();
-  final productService = ProductService();
+  final appointmentService = AppointmentService();
   final userService = UserService();
-  final familyService = FamilyService();
 
   List<ProductData> products = [];
   List<ArticleData> articles = [];
@@ -296,4 +294,3 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 }
- */
