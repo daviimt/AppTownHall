@@ -42,13 +42,13 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
-  // Future getUser() async {
-  //   await userService.getUser();
-  //   String companie = await userService.getUser() as String;
-  //   setState(() {
-  //     user = companie;
-  //   });
-  // }
+  Future getUser() async {
+    await userService.getUser();
+    String id = await userService.getUser() as String;
+    setState(() {
+      user = id;
+    });
+  }
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _UserScreenState extends State<UserScreen> {
     // ignore: avoid_print
     print('iniciando');
     getAppointments();
-    // getUser();
+    //getUser();
     // getFamilies();
   }
 
@@ -108,7 +108,7 @@ class _UserScreenState extends State<UserScreen> {
             'Appointments',
           ),
           Text(
-            '$cont/5',
+            '$cont',
             style: const TextStyle(fontSize: 30),
           ),
         ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
@@ -155,8 +155,9 @@ class _UserScreenState extends State<UserScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined), label: 'Catalog'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Articles'),
+              icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list), label: 'Appointments'),
         ],
         currentIndex: 1, //New
         onTap: _onItemTapped,
@@ -190,7 +191,7 @@ class _UserScreenState extends State<UserScreen> {
                         Text('${appointmentBuscar[index].date}',
                             style: const TextStyle(fontSize: 20)),
                         // if (wt > 0.0)
-                        Text('${appointmentBuscar[index].idDepartment}Kg',
+                        Text('${appointmentBuscar[index].idDepartment}',
                             style: const TextStyle(fontSize: 20))
                       ]),
                   const Divider(color: Colors.black),

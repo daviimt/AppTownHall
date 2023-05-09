@@ -13,11 +13,12 @@ class AppointmentService extends ChangeNotifier {
   Appointment a = Appointment();
   final storage = const FlutterSecureStorage();
 
-  getProductsfilter(String id) async {
+  //GET APPOINTMEN USER
+  getAppointmentsfilter(String id) async {
     appointments.clear();
     String? token = await AuthService().readToken();
 
-    final url = Uri.http(_baseUrl, 'api/user/categories/$id/products');
+    final url = Uri.http(_baseUrl, '/user/appointments/$id');
 
     isLoading = true;
     notifyListeners();
