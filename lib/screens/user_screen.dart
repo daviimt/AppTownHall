@@ -24,7 +24,7 @@ class _UserScreenState extends State<UserScreen> {
   int cont = 0;
   bool desactivate = true;
 
-  Future getArticles() async {
+  Future getAppointments() async {
     await appointmentService.getListAppointments();
     setState(() {
       appointments = appointmentService.appointments;
@@ -35,10 +35,10 @@ class _UserScreenState extends State<UserScreen> {
       }
 
       appointmentBuscar = appointments;
-      for (int i = 0; i < appointments.length; i++) {
-        appointmentBuscar
-            .removeWhere((element) => (element.id == appointments[i].id));
-      }
+      // for (int i = 0; i < appointments.length; i++) {
+      //   appointmentBuscar
+      //       .removeWhere((element) => (element.id == appointments[i].id));
+      // }
     });
   }
 
@@ -55,7 +55,7 @@ class _UserScreenState extends State<UserScreen> {
     super.initState();
     // ignore: avoid_print
     print('iniciando');
-    getArticles();
+    getAppointments();
     // getUser();
     // getFamilies();
   }
