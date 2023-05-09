@@ -31,11 +31,10 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    await storage.write(
-        key: 'company_id', value: decodedResp['data']['company_id'].toString());
+    await storage.write(key: 'id', value: decodedResp['data']['id'].toString());
     isLoading = false;
     notifyListeners();
-    return decodedResp['data']['company_id'].toString();
+    return decodedResp['data']['id'].toString();
   }
 
   // ignore: non_constant_identifier_names

@@ -1,4 +1,5 @@
 import 'package:townhall/Models/models.dart';
+import 'package:townhall/services/appointmentService.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -17,48 +18,37 @@ class _UserScreenState extends State<UserScreen> {
   final appointmentService = AppointmentService();
   final userService = UserService();
 
-  List<ProductData> products = [];
-  List<ArticleData> articles = [];
-  List<ArticleData> articlesBuscar = [];
-  List<FamilyData> families = [];
+  List<Appointment> appointmentBuscar = [];
+  List<Appointment> appointments = [];
   String user = "";
   int cont = 0;
   bool desactivate = true;
 
   Future getArticles() async {
-    await articleService.getArticles();
-    await productService.getProducts();
+    await appointmentService.getListAppointments();
     setState(() {
-      articles = articleService.articles;
-      products = productService.products;
-      cont = products.length;
+      appointments = appointmentService.appointments;
+
+      cont = appointments.length;
       if (cont >= 5) {
         desactivate = false;
       }
 
-      articlesBuscar = articles;
-      for (int i = 0; i < products.length; i++) {
-        articlesBuscar
-            .removeWhere((element) => (element.id == products[i].articleId));
+      appointmentBuscar = appointments;
+      for (int i = 0; i < appointments.length; i++) {
+        appointmentBuscar
+            .removeWhere((element) => (element.id == appointments[i].id));
       }
     });
   }
 
-  Future getUser() async {
-    await userService.getUser();
-    String companie = await userService.getUser() as String;
-    setState(() {
-      user = companie;
-    });
-  }
-
-  Future getFamilies() async {
-    setState(() => families.clear());
-    await familyService.getFamilies();
-    setState(() {
-      families = familyService.family;
-    });
-  }
+  // Future getUser() async {
+  //   await userService.getUser();
+  //   String companie = await userService.getUser() as String;
+  //   setState(() {
+  //     user = companie;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -66,23 +56,22 @@ class _UserScreenState extends State<UserScreen> {
     // ignore: avoid_print
     print('iniciando');
     getArticles();
-    getUser();
-    getFamilies();
+    // getUser();
+    // getFamilies();
   }
 
   void _runFilter(String enteredKeyword) {
-    List<ArticleData> results = [];
+    List<Appointment> results = [];
     if (enteredKeyword.isEmpty) {
-      results = articles;
+      results = appointments;
     } else {
-      results = articles
-          .where((x) => x.description!
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
+      results = appointments
+          .where((x) =>
+              x.date!.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
     }
     setState(() {
-      articlesBuscar = results;
+      // articlesBuscar = results;
     });
   }
 
@@ -116,7 +105,7 @@ class _UserScreenState extends State<UserScreen> {
             },
           ),
           Text(
-            'Articles',
+            'Appointments',
           ),
           Text(
             '$cont/5',
@@ -125,7 +114,7 @@ class _UserScreenState extends State<UserScreen> {
         ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
         centerTitle: true,
       ),
-      body: articleService.isLoading
+      body: appointmentService.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -180,14 +169,14 @@ class _UserScreenState extends State<UserScreen> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(30),
-      itemCount: articlesBuscar.length,
+      itemCount: appointmentBuscar.length,
       itemBuilder: (BuildContext context, index) {
-        double min = double.parse('${articlesBuscar[index].priceMin}');
-        double max = double.parse('${articlesBuscar[index].priceMax}');
-        double mid = ((min + max) / 2);
-        double wt = double.parse('${articlesBuscar[index].weight}');
+        // double min = double.parse('${appointmentBuscar[index].date}');
+        // double max = double.parse('${appointmentBuscar[index].hour}');
 
-        print(articlesBuscar[index].weight);
+        // double wt = double.parse('${appointmentBuscar[index].idDepartment}');
+
+        print(appointmentBuscar[index].idDepartment);
         return SizedBox(
           height: 250,
           child: Card(
@@ -198,78 +187,45 @@ class _UserScreenState extends State<UserScreen> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('${articlesBuscar[index].name}',
+                        Text('${appointmentBuscar[index].date}',
                             style: const TextStyle(fontSize: 20)),
-                        if (wt > 0.0)
-                          Text('${articlesBuscar[index].weight}Kg',
-                              style: const TextStyle(fontSize: 20))
+                        // if (wt > 0.0)
+                        Text('${appointmentBuscar[index].idDepartment}Kg',
+                            style: const TextStyle(fontSize: 20))
                       ]),
                   const Divider(color: Colors.black),
-                  Text('${articlesBuscar[index].description}',
+                  Text('${appointmentBuscar[index].hour}',
                       style: const TextStyle(fontSize: 35),
                       textAlign: TextAlign.center),
                   const Divider(color: Colors.black),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.all(10),
-                          width: 150,
-                          height: 50,
-                          child: SpinBox(
-                              min: min,
-                              max: max,
-                              step: 0.1,
-                              readOnly: true,
-                              decimals: 2,
-                              value: mid,
-                              onChanged: (value) {
-                                mid = value;
-                              })),
-                      const Divider(color: Colors.black),
-                      GFIconButton(
-                        onPressed: () {
-                          double margenBeneficio = 0;
-                          for (int x = 0; x < families.length; x++) {
-                            if (articlesBuscar[index].familyId ==
-                                families[x].id) {
-                              print(families[x].id);
-                              margenBeneficio =
-                                  double.parse(families[x].profitMargin!);
-                            }
-                            print('JAVI EL POWERLIFT');
-                          }
-                          print('NACHO FRANCES');
-
-                          print(((mid * margenBeneficio) / 100) + mid);
-
-                          if (((mid * margenBeneficio) / 100) + mid > max) {
-                            customToast('Profit margin superado', context);
-                          } else {
-                            if (cont < 5) {
-                              productService.addProduct(
-                                articlesBuscar[index].id.toString(),
-                                mid.toString(),
-                                articlesBuscar[index].familyId.toString(),
-                              );
-                              cont++;
-                              setState(() {
-                                articlesBuscar.removeWhere((element) =>
-                                    (element == articlesBuscar[index]));
-                              });
-                            } else {
-                              customToast('Elements limit reached', context);
-                            }
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.add_shopping_cart_sharp,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     Container(
+                  //         margin: EdgeInsets.all(10),
+                  //         width: 150,
+                  //         height: 50,
+                  //         child: SpinBox(
+                  //             min: min,
+                  //             max: max,
+                  //             step: 0.1,
+                  //             readOnly: true,
+                  //             decimals: 2,
+                  //             value: mid,
+                  //             onChanged: (value) {
+                  //               mid = value;
+                  //             })),
+                  //     const Divider(color: Colors.black),
+                  //     GFIconButton(
+                  //       onPressed: () {},
+                  //       icon: const Icon(
+                  //         Icons.add_shopping_cart_sharp,
+                  //         color: Colors.white,
+                  //         size: 30,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ]),
           ),
         );
