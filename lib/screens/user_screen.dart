@@ -196,6 +196,7 @@ class _UserScreenState extends State<UserScreen> {
                   Text('${appointmentBuscar[index].hour}',
                       style: const TextStyle(fontSize: 35),
                       textAlign: TextAlign.center),
+                  const Divider(color: Colors.black),
                   IconButton(
                       onPressed: () async {
                         appointmentService
@@ -203,7 +204,6 @@ class _UserScreenState extends State<UserScreen> {
                         Navigator.pushReplacementNamed(context, 'userscreen');
                       },
                       icon: Icon(Icons.delete)),
-                  const Divider(color: Colors.black),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   //   children: [
