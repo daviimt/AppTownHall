@@ -152,6 +152,7 @@ class _UserScreenState extends State<UserScreen> {
                 ),
               ),
             ),
+      floatingActionButton: Icon(Icons.fiber_new_rounded),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
