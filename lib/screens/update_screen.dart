@@ -176,9 +176,9 @@ class __LoginForm extends State<_LoginForm> {
                             loginForm.name,
                             loginForm.surname);
 
-                        if (errorMessage == '200') {
-                          customToast('Registered', context);
-                          Navigator.pushReplacementNamed(context, 'login');
+                        if (errorMessage == '201') {
+                          customToast('Updated', context);
+                          Navigator.pushReplacementNamed(context, 'userscreen');
                         } else if (errorMessage == '500') {
                           // TODO: mostrar error en pantalla
                           customToast('User registered', context);
