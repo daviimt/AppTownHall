@@ -65,6 +65,24 @@ class __LoginForm extends State<_LoginForm> {
   final userService = UserService();
   User user = User();
 
+  DateTime selectedDate =
+      DateTime(10); // Variable para almacenar la fecha seleccionada
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), // Fecha inicial del selector
+      firstDate: DateTime(2020), // Fecha más antigua permitida
+      lastDate: DateTime(2025), // Fecha más reciente permitida
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
   Future getUser() async {
     await userService.getUser();
     User us = await userService.getUser();
@@ -89,16 +107,9 @@ class __LoginForm extends State<_LoginForm> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
-            TextFormField(
-              autocorrect: false,
-              initialValue: user.username,
-              keyboardType: TextInputType.text,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: 'date',
-                labelText: 'Date',
-                prefixIcon: Icons.account_circle_sharp,
-              ),
-              onChanged: (value) => loginForm.username = value,
+            ElevatedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select Date'),
             ),
             SizedBox(height: 30),
             TextFormField(
