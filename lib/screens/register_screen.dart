@@ -19,7 +19,7 @@ class RegisterScreen extends StatelessWidget {
               child: Column(
             children: [
               SizedBox(height: 10),
-              Text('Crear cuenta',
+              Text('Create Account',
                   style: Theme.of(context).textTheme.headline4),
               SizedBox(height: 30),
               ChangeNotifierProvider(
@@ -34,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
                       MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder())),
               child: Text(
-                '¿Ya tienes una cuenta?',
+                'Log In',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               )),
           SizedBox(height: 50),
@@ -60,7 +60,7 @@ class _LoginForm extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'username',
-                  labelText: 'Usuario',
+                  labelText: 'Username',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => loginForm.username = value,
             ),
@@ -81,7 +81,7 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'name',
                   labelText: 'Name',
-                  prefixIcon: Icons.account_circle_sharp),
+                  prefixIcon: Icons.text_decrease),
               onChanged: (value) => loginForm.name = value,
             ),
             SizedBox(height: 30),
@@ -101,7 +101,7 @@ class _LoginForm extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                   hintText: '*****',
-                  labelText: 'Contraseña',
+                  labelText: 'Password',
                   prefixIcon: Icons.lock_outline),
               onChanged: (value) => loginForm.password = value,
             ),
@@ -115,7 +115,7 @@ class _LoginForm extends StatelessWidget {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      loginForm.isLoading ? 'Espere' : 'Ingresar',
+                      loginForm.isLoading ? 'Wait' : 'Submit',
                       style: TextStyle(color: Colors.white),
                     )),
                 onPressed: loginForm.isLoading
@@ -138,15 +138,15 @@ class _LoginForm extends StatelessWidget {
                             loginForm.surname);
 
                         if (errorMessage == '200') {
-                          customToast('Registrado jefe', context);
+                          customToast('Registered', context);
                           Navigator.pushReplacementNamed(context, 'login');
                         } else if (errorMessage == '500') {
                           // TODO: mostrar error en pantalla
-                          customToast('Usuario ya registrado', context);
+                          customToast('User registered', context);
 
                           loginForm.isLoading = false;
                         } else {
-                          customToast('Error de servidor', context);
+                          customToast('Server error', context);
                         }
                       })
           ],

@@ -21,8 +21,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
             children: [
               SizedBox(height: 10),
-              Text('Iniciar sesión',
-                  style: Theme.of(context).textTheme.headline4),
+              Text('Log In', style: Theme.of(context).textTheme.headline4),
               SizedBox(height: 30),
               ChangeNotifierProvider(
                   create: (_) => LoginFormProvider(), child: _LoginForm())
@@ -37,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                       MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder())),
               child: Text(
-                'Crear una nueva cuenta',
+                'Create new account',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               )),
           SizedBox(height: 50),
@@ -62,9 +61,9 @@ class _LoginForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                  labelText: 'Usuario',
+                  labelText: 'Username',
                   prefixIcon: Icons.account_circle_sharp,
-                  hintText: 'nombre_usuario'),
+                  hintText: 'username'),
               onChanged: (value) => loginForm.username = value,
             ),
             const SizedBox(height: 30),
@@ -73,7 +72,7 @@ class _LoginForm extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                labelText: 'Contraseña',
+                labelText: 'Password',
                 prefixIcon: Icons.lock_outline,
                 hintText: '*****',
               ),
@@ -89,7 +88,7 @@ class _LoginForm extends StatelessWidget {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      loginForm.isLoading ? 'Wait' : 'Ingresar',
+                      loginForm.isLoading ? 'Wait' : 'Submit',
                       style: TextStyle(color: Colors.white),
                     )),
                 onPressed: loginForm.isLoading
@@ -111,7 +110,7 @@ class _LoginForm extends StatelessWidget {
 
                         if (spliter?[1] == '200') {
                           if (spliter?[2] == 'false') {
-                            customToast('El usuario no está activo', context);
+                            customToast('User isn\'t enabled', context);
                           } else {
                             if (spliter?[0] == 'ROLE_MANAGER') {
                               Navigator.pushReplacementNamed(
@@ -123,7 +122,7 @@ class _LoginForm extends StatelessWidget {
                           }
                         } else {
                           customToast(
-                              'Usuario o contraseña incorrecta', context);
+                              'Username or password incorrect', context);
                           Navigator.pushReplacementNamed(context, 'login');
                         }
                       })
