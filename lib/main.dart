@@ -1,6 +1,7 @@
 import 'package:townhall/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:townhall/screens/newAppointmentScreen.dart';
 import 'package:townhall/screens/prueba.dart';
 
 import 'package:townhall/screens/screens.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
           'updatescreen': (_) => UpdateScreen(),
           'userscreen': (_) => const UserScreen(),
           'managerscreen': (_) => const Prueba(),
+          'newappointmentscreen': (_) => NewAppointmentScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(

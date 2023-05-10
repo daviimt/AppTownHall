@@ -49,6 +49,7 @@ dependencies:
   filesystem_picker: ^3.0.0
   intl: ^0.17.0
   syncfusion_flutter_charts: ^20.4.49
+  flutter_datetime_picker: ^1.6.1
 
 dev_dependencies:
   flutter_test:

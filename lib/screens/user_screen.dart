@@ -152,7 +152,11 @@ class _UserScreenState extends State<UserScreen> {
                 ),
               ),
             ),
-      floatingActionButton: Icon(Icons.fiber_new_rounded),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'newappointmentscreen');
+          },
+          child: Icon(Icons.fiber_new_rounded)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
