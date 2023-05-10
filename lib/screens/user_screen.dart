@@ -186,7 +186,8 @@ class _UserScreenState extends State<UserScreen> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('${appointmentBuscar[index].date}',
+                        Text(
+                            '${appointmentBuscar[index].date}'.substring(0, 10),
                             style: const TextStyle(fontSize: 20)),
                         // if (wt > 0.0)
                         Text('${appointmentBuscar[index].idDepartment}',
