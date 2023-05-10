@@ -136,4 +136,45 @@ class UserService extends ChangeNotifier {
       },
     );
   }
+
+//UPDATE USER
+  Future<String?> update(
+    String username,
+    String password,
+    String dni,
+    String name,
+    String surname,
+  ) async {
+    String id = await AuthService().readId();
+    final Map<String, dynamic> authData = {
+      'id': id,
+      'username': username,
+      'dni': dni,
+      'name': name,
+      'surname': surname,
+      'password': password,
+    };
+
+    final encodedFormData = utf8.encode(json.encode(authData));
+    final url = Uri.http(_baseUrl, '/all/update');
+
+    final resp = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: encodedFormData);
+
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    print("ESTO ES LO QUE QUIERO");
+    print(decodedResp);
+    if (resp.statusCode == 200) {
+      await storage.write(key: 'token', value: decodedResp['token']);
+      await storage.write(key: 'id', value: decodedResp['id'].toString());
+
+      return (resp.statusCode.toString());
+    } else {
+      return (resp.statusCode.toString());
+    }
+  }
 }

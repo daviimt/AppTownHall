@@ -169,7 +169,7 @@ class __LoginForm extends State<_LoginForm> {
                         loginForm.isLoading = true;
 
                         // TODO: validar si el login es correcto
-                        final String? errorMessage = await authService.register(
+                        final String? errorMessage = await userService.update(
                             loginForm.username,
                             loginForm.password,
                             loginForm.dni,
