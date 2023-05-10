@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:townhall/screens/prueba.dart';
 
 import 'package:townhall/screens/screens.dart';
+import 'package:townhall/screens/update_screen.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
           'home': (_) => const HomeScreen(),
           'login': (_) => LoginScreen(),
           'register': (_) => RegisterScreen(),
+          'updatescreen': (_) => UpdateScreen(),
           'userscreen': (_) => const UserScreen(),
           'managerscreen': (_) => const Prueba(),
         },

@@ -80,9 +80,9 @@ class _UserScreenState extends State<UserScreen> {
     // ignore: no_leading_underscores_for_local_identifiers
     void _onItemTapped(int index) {
       if (index == 0) {
-        Navigator.pushReplacementNamed(context, 'user');
+        Navigator.pushReplacementNamed(context, 'userscreen');
       } else {
-        Navigator.pushReplacementNamed(context, 'data');
+        Navigator.pushReplacementNamed(context, 'updatescreen');
       }
     }
 
@@ -155,11 +155,11 @@ class _UserScreenState extends State<UserScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
-          BottomNavigationBarItem(
               icon: Icon(Icons.list), label: 'Appointments'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
         ],
-        currentIndex: 1, //New
+        currentIndex: 0, //New
         onTap: _onItemTapped,
       ),
     );
@@ -176,8 +176,6 @@ class _UserScreenState extends State<UserScreen> {
         // double max = double.parse('${appointmentBuscar[index].hour}');
 
         // double wt = double.parse('${appointmentBuscar[index].idDepartment}');
-
-        print(appointmentBuscar[index].idDepartment);
         return SizedBox(
           height: 250,
           child: Card(

@@ -34,6 +34,29 @@ class UserService extends ChangeNotifier {
     await storage.write(key: 'id', value: decodedResp['data']['id'].toString());
     isLoading = false;
     notifyListeners();
+    //Crear user
+    return decodedResp['data']['id'].toString();
+  }
+
+  getUserId() async {
+    String? token = await AuthService().readToken();
+    String? id = await AuthService().readId();
+
+    final url = Uri.http(_baseUrl, '/public/api/user/$id');
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    await storage.write(key: 'id', value: decodedResp['data']['id'].toString());
+    isLoading = false;
+    notifyListeners();
     return decodedResp['data']['id'].toString();
   }
 
