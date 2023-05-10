@@ -13,41 +13,7 @@ class AppointmentService extends ChangeNotifier {
   Appointment a = Appointment();
   final storage = const FlutterSecureStorage();
 
-  //GET APPOINTMEN USER
-  getAppointmentsfilter(String id) async {
-    appointments.clear();
-    String? token = await AuthService().readToken();
-
-    final url = Uri.http(_baseUrl, '/user/appointments/$id');
-
-    isLoading = true;
-    notifyListeners();
-    final resp = await http.get(
-      url,
-      headers: {"Authorization": "Bearer $token"},
-    );
-
-    final List<dynamic> decodedResp = json.decode(resp.body);
-
-    List<Appointment> appointmentList = decodedResp
-        .map((e) => Appointment(
-              id: e['id'],
-              date: e['date'],
-              hour: e['hour'],
-              idDepartment: e['idDepartment'],
-              idManager: e['idManager'],
-              idUser: e['idUser'],
-            ))
-        .toList();
-
-    appointments = appointmentList;
-    isLoading = false;
-    notifyListeners();
-
-    return appointmentList;
-  }
-
-  // GET APPOINTMENTS
+// GET APPOINTMENTS
   Future<List> getListAppointments() async {
     appointments.clear();
     isLoading = true;
@@ -78,7 +44,42 @@ class AppointmentService extends ChangeNotifier {
     return appointmentList;
   }
 
-  Future<Appointment> getProduct(String id) async {
+  //GET APPOINTMEN USER
+  getAppointmentsUser(String id) async {
+    appointments.clear();
+    String? token = await AuthService().readToken();
+
+    final url = Uri.http(_baseUrl, 'api/user/appointments/$id');
+
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    final List<dynamic> decodedResp = json.decode(resp.body);
+
+    List<Appointment> appointmentList = decodedResp
+        .map((e) => Appointment(
+              id: e['id'],
+              date: e['date'],
+              hour: e['hour'],
+              idDepartment: e['idDepartment'],
+              idManager: e['idManager'],
+              idUser: e['idUser'],
+            ))
+        .toList();
+
+    appointments = appointmentList;
+    isLoading = false;
+    notifyListeners();
+
+    return appointmentList;
+  }
+
+//GET APPOINTMENT
+  Future<Appointment> getAppointment(String id) async {
     String? token = await AuthService().readToken();
 
     final url = Uri.http(_baseUrl, '/api/all/products/$id');
@@ -107,25 +108,7 @@ class AppointmentService extends ChangeNotifier {
     return appointment;
   }
 
-  //  DELETE APPOINTMENT
-  deleteProduct(String id) async {
-    String? token = await AuthService().readToken();
-
-    isLoading = true;
-    notifyListeners();
-
-    final url = Uri.http(_baseUrl, '/api/admin/products/$id');
-
-    final resp = await http.delete(
-      url,
-      headers: {"Authorization": "Bearer $token"},
-    );
-    isLoading = false;
-    notifyListeners();
-    if (resp.statusCode == 200) {}
-  }
-
-  //CREATE APPOINTMENT
+//CREATE APPOINTMENT
   Future create(
     String name,
     String description,
@@ -155,6 +138,24 @@ class AppointmentService extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
 
+    if (resp.statusCode == 200) {}
+  }
+
+  //  DELETE APPOINTMENT
+  deleteProduct(String id) async {
+    String? token = await AuthService().readToken();
+
+    isLoading = true;
+    notifyListeners();
+
+    final url = Uri.http(_baseUrl, '/api/admin/products/$id');
+
+    final resp = await http.delete(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+    isLoading = false;
+    notifyListeners();
     if (resp.statusCode == 200) {}
   }
 }

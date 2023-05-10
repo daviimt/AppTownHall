@@ -25,7 +25,7 @@ class _UserScreenState extends State<UserScreen> {
   bool desactivate = true;
 
   Future getAppointments() async {
-    await appointmentService.getListAppointments();
+    await appointmentService.getAppointmentsUser(await AuthService().readId());
     setState(() {
       appointments = appointmentService.appointments;
 
@@ -82,7 +82,7 @@ class _UserScreenState extends State<UserScreen> {
       if (index == 0) {
         Navigator.pushReplacementNamed(context, 'user');
       } else {
-        Navigator.pushReplacementNamed(context, 'catalog');
+        Navigator.pushReplacementNamed(context, 'data');
       }
     }
 
