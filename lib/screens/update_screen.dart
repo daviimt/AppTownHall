@@ -92,11 +92,12 @@ class __LoginForm extends State<_LoginForm> {
             TextFormField(
               autocorrect: false,
               initialValue: user.username,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'username',
-                  labelText: 'Username',
-                  prefixIcon: Icons.account_circle_sharp),
+                hintText: 'username',
+                labelText: 'Username',
+                prefixIcon: Icons.account_circle_sharp,
+              ),
               onChanged: (value) => loginForm.username = value,
             ),
             SizedBox(height: 30),
@@ -137,7 +138,7 @@ class __LoginForm extends State<_LoginForm> {
               autocorrect: false,
               initialValue: user.password,
               obscureText: true,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                   hintText: '*****',
                   labelText: 'Password',
@@ -160,32 +161,41 @@ class __LoginForm extends State<_LoginForm> {
                 onPressed: loginForm.isLoading
                     ? null
                     : () async {
-                        FocusScope.of(context).unfocus();
-                        final authService =
-                            Provider.of<AuthService>(context, listen: false);
-
-                        if (!loginForm.isValidForm()) return;
-
-                        loginForm.isLoading = true;
-
-                        // TODO: validar si el login es correcto
-                        final String? errorMessage = await userService.update(
-                            loginForm.username,
-                            loginForm.password,
-                            loginForm.dni,
-                            loginForm.name,
-                            loginForm.surname);
-
-                        if (errorMessage == '201') {
-                          customToast('Updated', context);
-                          Navigator.pushReplacementNamed(context, 'userscreen');
-                        } else if (errorMessage == '500') {
-                          // TODO: mostrar error en pantalla
-                          customToast('User registered', context);
-
-                          loginForm.isLoading = false;
+                        if (loginForm.dni.isEmpty ||
+                            loginForm.username.isEmpty ||
+                            loginForm.password.isEmpty ||
+                            loginForm.name.isEmpty ||
+                            loginForm.surname.isEmpty) {
+                          customToast("Fiels can't be empty", context);
                         } else {
-                          customToast('Server error', context);
+                          FocusScope.of(context).unfocus();
+                          final authService =
+                              Provider.of<AuthService>(context, listen: false);
+
+                          if (!loginForm.isValidForm()) return;
+
+                          loginForm.isLoading = true;
+
+                          // TODO: validar si el login es correcto
+                          final String? errorMessage = await userService.update(
+                              loginForm.username,
+                              loginForm.password,
+                              loginForm.dni,
+                              loginForm.name,
+                              loginForm.surname);
+
+                          if (errorMessage == '201') {
+                            customToast('Updated', context);
+                            Navigator.pushReplacementNamed(
+                                context, 'userscreen');
+                          } else if (errorMessage == '500') {
+                            // TODO: mostrar error en pantalla
+                            customToast('User registered', context);
+
+                            loginForm.isLoading = false;
+                          } else {
+                            customToast('Server error', context);
+                          }
                         }
                       })
           ],
