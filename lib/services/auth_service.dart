@@ -23,9 +23,15 @@ class AuthService extends ChangeNotifier {
   Future<String?> register(
     String username,
     String password,
+    String dni,
+    String name,
+    String surname,
   ) async {
     final Map<String, dynamic> authData = {
       'username': username,
+      'dni': dni,
+      'name': name,
+      'surname': surname,
       'password': password,
     };
 

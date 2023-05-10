@@ -59,10 +59,40 @@ class _LoginForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'nombre_usuario',
+                  hintText: 'username',
                   labelText: 'Usuario',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => loginForm.username = value,
+            ),
+            SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'dni',
+                  labelText: 'Dni',
+                  prefixIcon: Icons.account_circle_sharp),
+              onChanged: (value) => loginForm.dni = value,
+            ),
+            SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'name',
+                  labelText: 'Name',
+                  prefixIcon: Icons.account_circle_sharp),
+              onChanged: (value) => loginForm.name = value,
+            ),
+            SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'surname',
+                  labelText: 'Surname',
+                  prefixIcon: Icons.account_circle_sharp),
+              onChanged: (value) => loginForm.surname = value,
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -101,7 +131,11 @@ class _LoginForm extends StatelessWidget {
 
                         // TODO: validar si el login es correcto
                         final String? errorMessage = await authService.register(
-                            loginForm.username, loginForm.password);
+                            loginForm.username,
+                            loginForm.password,
+                            loginForm.dni,
+                            loginForm.name,
+                            loginForm.surname);
 
                         if (errorMessage == '200') {
                           customToast('Registrado jefe', context);
