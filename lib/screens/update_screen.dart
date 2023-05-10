@@ -16,25 +16,6 @@ class UpdateScreen extends StatefulWidget {
 }
 
 class _UpdateScreen extends State<UpdateScreen> {
-  final userService = UserService();
-  User user = userService.getUser();
-
-  Future getUser() async {
-    await userService.getUser();
-    User us = await userService.getUser();
-    setState(() {
-      user = us;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    print('iniciando');
-    getUser();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +54,31 @@ class _UpdateScreen extends State<UpdateScreen> {
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
+  const _LoginForm({Key? key}) : super(key: key);
+
+  @override
+  State<_LoginForm> createState() => __LoginForm();
+}
+
+class __LoginForm extends State<_LoginForm> {
+  final userService = UserService();
+  User user = User();
+
+  Future getUser() async {
+    await userService.getUser();
+    User us = await userService.getUser();
+    setState(() {
+      user = us;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<LoginFormProvider>(context);
@@ -86,6 +91,7 @@ class _LoginForm extends StatelessWidget {
           children: [
             TextFormField(
               autocorrect: false,
+              initialValue: user.username,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'username',
@@ -96,6 +102,7 @@ class _LoginForm extends StatelessWidget {
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
+              initialValue: user.dni,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'dni',
@@ -106,6 +113,7 @@ class _LoginForm extends StatelessWidget {
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
+              initialValue: user.name,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'name',
@@ -116,6 +124,7 @@ class _LoginForm extends StatelessWidget {
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
+              initialValue: user.surname,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'surname',
@@ -126,6 +135,7 @@ class _LoginForm extends StatelessWidget {
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
+              initialValue: user.password,
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(

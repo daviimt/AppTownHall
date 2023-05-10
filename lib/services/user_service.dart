@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:townhall/Models/models.dart';
 
 class UserService extends ChangeNotifier {
-  final String _baseUrl = 'semillero.allsites.es';
+  final String _baseUrl = '192.168.1.42:8080';
   bool isLoading = true;
   String usuario = "";
   final storage = const FlutterSecureStorage();
@@ -19,7 +19,7 @@ class UserService extends ChangeNotifier {
     String? token = await AuthService().readToken();
     String? id = await AuthService().readId();
 
-    final url = Uri.http(_baseUrl, '/public/api/user/$id');
+    final url = Uri.http(_baseUrl, '/all/$id');
     isLoading = true;
     notifyListeners();
     final resp = await http.get(
@@ -31,11 +31,35 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    await storage.write(key: 'id', value: decodedResp['data']['id'].toString());
+    print(decodedResp);
+    await storage.write(key: 'id', value: decodedResp['id'].toString());
     isLoading = false;
     notifyListeners();
     //Crear user
-    return decodedResp['data']['id'].toString();
+    String idUser = decodedResp['id'].toString();
+    String usernameUser = decodedResp['username'].toString();
+    String passwordUser = decodedResp['password'].toString();
+    String nameUser = decodedResp['name'].toString();
+    String surnameUser = decodedResp['surname'].toString();
+    String dniUser = decodedResp['dni'].toString();
+    String enabledUser = decodedResp['surname'].toString();
+    String roleUser = decodedResp['surname'].toString();
+    String tokenUser = decodedResp['surname'].toString();
+    String idDepartmentUser = decodedResp['surname'].toString();
+
+    User us = User(
+        id: int.parse(idUser),
+        username: usernameUser,
+        password: passwordUser,
+        name: nameUser,
+        surname: surnameUser,
+        dni: dniUser,
+        enabled: bool.hasEnvironment(enabledUser),
+        role: roleUser,
+        token: tokenUser);
+
+    print(us.dni);
+    return us;
   }
 
   getUserId() async {
