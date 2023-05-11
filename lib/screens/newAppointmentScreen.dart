@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:townhall/models/models.dart';
+import 'package:townhall/providers/login_form_provider%20copy.dart';
 import 'package:townhall/screens/screens.dart';
 import '../providers/providers.dart';
 import '../services/services.dart';
@@ -99,7 +101,7 @@ class __LoginForm extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final loginForm = Provider.of<LoginFormProvider>(context);
+    final loginForm = Provider.of<AppointmentFormProvider>(context);
 
     return Container(
       child: Form(
@@ -107,21 +109,35 @@ class __LoginForm extends State<_LoginForm> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () => _selectDate(context),
-              child: Text('Select Date'),
-            ),
+            TextButton(
+                onPressed: () {
+                  DatePicker.showDatePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime.now(),
+                      maxTime: DateTime(2070, 6, 7),
+                      onChanged: (value) => loginForm.date = value,
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.es);
+                },
+                child: Text(
+                  'Date',
+                  style: TextStyle(color: Colors.blue),
+                )),
             SizedBox(height: 30),
-            TextFormField(
-              autocorrect: false,
-              initialValue: user.dni,
-              keyboardType: TextInputType.text,
-              decoration: InputDecorations.authInputDecoration(
-                  hintText: 'hour',
-                  labelText: 'Hour',
-                  prefixIcon: Icons.account_circle_sharp),
-              onChanged: (value) => loginForm.dni = value,
-            ),
+            TextButton(
+                onPressed: () {
+                  DatePicker.showDatePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime.now(),
+                      maxTime: DateTime(2070, 6, 7),
+                      onChanged: (value) => loginForm.date = value,
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.es);
+                },
+                child: Text(
+                  'Hour',
+                  style: TextStyle(color: Colors.blue),
+                )),
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
