@@ -147,7 +147,7 @@ class __LoginForm extends State<_LoginForm> {
                   hintText: 'department',
                   labelText: 'Department',
                   prefixIcon: Icons.text_decrease),
-              onChanged: (value) => loginForm.name = value,
+              onChanged: (value) => loginForm.idDepartment = int.parse(value),
             ),
             SizedBox(height: 30),
             SizedBox(height: 30),
@@ -166,11 +166,9 @@ class __LoginForm extends State<_LoginForm> {
                 onPressed: loginForm.isLoading
                     ? null
                     : () async {
-                        if (loginForm.dni.isEmpty ||
-                            loginForm.username.isEmpty ||
-                            loginForm.password.isEmpty ||
-                            loginForm.name.isEmpty ||
-                            loginForm.surname.isEmpty) {
+                        if (loginForm.date.isUtc ||
+                            loginForm.hour.isEmpty ||
+                            loginForm.idDepartment == 0) {
                           customToast("Fiels can't be empty", context);
                         } else {
                           FocusScope.of(context).unfocus();
@@ -183,11 +181,9 @@ class __LoginForm extends State<_LoginForm> {
 
                           // TODO: validar si el login es correcto
                           final String? errorMessage = await userService.update(
-                              loginForm.username,
-                              loginForm.password,
-                              loginForm.dni,
-                              loginForm.name,
-                              loginForm.surname);
+                              loginForm.date,
+                              loginForm.hour,
+                              loginForm.idDepartment);
 
                           if (errorMessage == '201') {
                             customToast('Updated', context);
