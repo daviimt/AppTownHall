@@ -6,7 +6,7 @@ import 'package:townhall/models/models.dart';
 import 'package:townhall/providers/appointment_form_provider.dart';
 import 'package:townhall/providers/department_form_provider.dart';
 import 'package:townhall/screens/screens.dart';
-import 'package:townhall/services/appointmentService%20copy.dart';
+import 'package:townhall/services/departmentService.dart';
 import '../providers/providers.dart';
 import '../services/services.dart';
 import '../ui/input_decorations.dart';
@@ -93,8 +93,8 @@ class __Form extends State<_Form> {
     await departmentService.getListDepartments();
     setState(() {
       departments = departmentService.departments;
-      print("CUENTA");
-      print(departments.length);
+      print("ES ESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+      print(departments[0].name);
     });
   }
 

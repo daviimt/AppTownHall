@@ -30,8 +30,8 @@ class DepartmentService extends ChangeNotifier {
     List<Department> departmentList = decodedResp
         .map((e) => Department(
               id: e['id'],
-              name: e['date'],
-              description: e['hour'],
+              name: e['name'],
+              description: e['description'],
             ))
         .toList();
     departments = departmentList;
@@ -61,8 +61,8 @@ class DepartmentService extends ChangeNotifier {
     List<Department> departmentList = decodedResp
         .map((e) => Department(
               id: e['id'],
-              name: e['date'],
-              description: e['hour'],
+              name: e['name'],
+              description: e['description'],
             ))
         .toList();
 
@@ -89,8 +89,8 @@ class DepartmentService extends ChangeNotifier {
 
     Department department = Department(
       id: decodedResp['id'],
-      name: decodedResp['date'],
-      description: decodedResp['hour'],
+      name: decodedResp['name'],
+      description: decodedResp['description'],
     );
 
     a = department;
