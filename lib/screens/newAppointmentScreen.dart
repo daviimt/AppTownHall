@@ -150,8 +150,6 @@ class __Form extends State<_Form> {
                   context,
                   showTitleActions: true,
                   onChanged: (time) {
-                    print("HORAAAAAAAAAAAAAAAAAAAAAAA");
-                    print(time);
                     List<String> h = time.toString().split(" ");
                     List<String> h2 = h[1].split(".");
                     print(h2[0]);
@@ -228,8 +226,7 @@ class __Form extends State<_Form> {
 
                         List<String> da =
                             appointmentForm.date.toString().split(" ");
-                        print("HORAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                        print(appointmentForm.hour);
+
                         final String? errorMessage =
                             await appointmentService.create(
                                 da[0],
