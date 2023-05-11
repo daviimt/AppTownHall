@@ -141,6 +141,7 @@ class AppointmentService extends ChangeNotifier {
     notifyListeners();
 
     if (resp.statusCode == 200) {}
+    return resp.statusCode.toString();
   }
 
   //  DELETE APPOINTMENT
