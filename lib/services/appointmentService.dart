@@ -110,22 +110,24 @@ class AppointmentService extends ChangeNotifier {
 
 //CREATE APPOINTMENT
   Future create(
-    String name,
-    String description,
-    String price,
-    int idCategory,
+    String date,
+    String hour,
+    String idDepartment,
+    int idManager,
+    int idUser,
   ) async {
     String? token = await AuthService().readToken();
     isLoading = false;
     notifyListeners();
     final Map<String, dynamic> productData = {
-      'name': name,
-      'description': description,
-      'price': price,
-      'idCategory': idCategory,
+      'date': date,
+      'hour': hour,
+      'idDepartment': idDepartment,
+      'idManager': idManager,
+      'idUser': idUser,
     };
 
-    final url = Uri.http(_baseUrl, '/api/admin/categories/$idCategory/product');
+    final url = Uri.http(_baseUrl, '/api/user/appointment');
 
     final resp = await http.post(
       url,

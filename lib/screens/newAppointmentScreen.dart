@@ -6,6 +6,7 @@ import 'package:townhall/models/models.dart';
 import 'package:townhall/providers/appointment_form_provider.dart';
 import 'package:townhall/providers/department_form_provider.dart';
 import 'package:townhall/screens/screens.dart';
+import 'package:townhall/services/appointmentService.dart';
 import 'package:townhall/services/departmentService.dart';
 import '../providers/providers.dart';
 import '../services/services.dart';
@@ -93,8 +94,6 @@ class __Form extends State<_Form> {
     await departmentService.getListDepartments();
     setState(() {
       departments = departmentService.departments;
-      print("ES ESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-      print(departments[0].name);
     });
   }
 
@@ -116,6 +115,7 @@ class __Form extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final appointmentForm = Provider.of<AppointmentFormProvider>(context);
+    final appointmentService = AppointmentService();
     //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
     List<Department> options = [];
     if (departments.isNotEmpty) {
@@ -205,40 +205,45 @@ class __Form extends State<_Form> {
                 onPressed: appointmentForm.isLoading
                     ? null
                     : () async {
-                        if (appointmentForm.date.isUtc ||
-                            appointmentForm.hour.isEmpty ||
-                            appointmentForm.idDepartment == 0) {
-                          customToast("Fiels can't be empty", context);
+                        // if (appointmentForm.date.isUtc ||
+                        //     appointmentForm.hour.isEmpty ||
+                        //     appointmentForm.idDepartment == 0) {
+                        //   customToast("Fiels can't be empty", context);
+                        // } else {
+                        FocusScope.of(context).unfocus();
+                        final authService =
+                            Provider.of<AuthService>(context, listen: false);
+
+                        if (!appointmentForm.isValidForm()) return;
+
+                        appointmentForm.isLoading = true;
+                        int idUser = user.id!;
+                        // TODO: validar si el login es correcto
+                        print("DATEEEEEEEEEEEEEEEEE");
+                        print(appointmentForm.date);
+                        List<String> da =
+                            appointmentForm.date.toString().split(" ");
+                        final String? errorMessage =
+                            await appointmentService.create(
+                                da[0],
+                                appointmentForm.hour,
+                                appointmentForm.idDepartment.toString(),
+                                1,
+                                idUser);
+                        print("QUE ERRRRRRRRRRRRRRRRRRRRRROR");
+                        print(errorMessage);
+                        if (errorMessage == '201') {
+                          customToast('Created', context);
+                          Navigator.pushReplacementNamed(context, 'userscreen');
+                        } else if (errorMessage == '500') {
+                          // TODO: mostrar error en pantalla
+                          customToast('User registered', context);
+
+                          appointmentForm.isLoading = false;
                         } else {
-                          FocusScope.of(context).unfocus();
-                          final authService =
-                              Provider.of<AuthService>(context, listen: false);
-
-                          if (!appointmentForm.isValidForm()) return;
-
-                          appointmentForm.isLoading = true;
-                          int idUser = await AuthService().readId();
-                          // TODO: validar si el login es correcto
-                          final String? errorMessage = await userService.update(
-                              appointmentForm.date.toString(),
-                              appointmentForm.hour,
-                              appointmentForm.idDepartment.toString(),
-                              idUser.toString(),
-                              idUser.toString());
-
-                          if (errorMessage == '201') {
-                            customToast('Updated', context);
-                            Navigator.pushReplacementNamed(
-                                context, 'userscreen');
-                          } else if (errorMessage == '500') {
-                            // TODO: mostrar error en pantalla
-                            customToast('User registered', context);
-
-                            appointmentForm.isLoading = false;
-                          } else {
-                            customToast('Server error', context);
-                          }
+                          customToast('Server error', context);
                         }
+                        // }
                       })
           ],
         ),
