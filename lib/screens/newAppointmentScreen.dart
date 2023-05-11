@@ -219,8 +219,7 @@ class __Form extends State<_Form> {
                         appointmentForm.isLoading = true;
                         int idUser = user.id!;
                         // TODO: validar si el login es correcto
-                        print("DATEEEEEEEEEEEEEEEEE");
-                        print(appointmentForm.date);
+
                         List<String> da =
                             appointmentForm.date.toString().split(" ");
                         final String? errorMessage =
@@ -230,8 +229,7 @@ class __Form extends State<_Form> {
                                 appointmentForm.idDepartment.toString(),
                                 1,
                                 idUser);
-                        print("QUE ERRRRRRRRRRRRRRRRRRRRRROR");
-                        print(errorMessage);
+
                         if (errorMessage == '201') {
                           customToast('Created', context);
                           Navigator.pushReplacementNamed(context, 'userscreen');
