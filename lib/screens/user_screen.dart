@@ -96,6 +96,11 @@ class _UserScreenState extends State<UserScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(40.0),
+          ),
+        ),
         title: Row(children: [
           IconButton(
             icon: const Icon(Icons.login_outlined),
@@ -145,7 +150,7 @@ class _UserScreenState extends State<UserScreen> {
                     ),
                     SizedBox(
                       child: Container(
-                        child: builListView(context),
+                        child: buildListView(context),
                       ),
                     ),
                   ],
@@ -170,80 +175,78 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  Widget builListView(BuildContext context) {
-    return ListView.separated(
+  //BUILD LIST
+  Widget buildListView(BuildContext context) {
+    return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(30),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+      ),
       itemCount: appointmentBuscar.length,
       itemBuilder: (BuildContext context, index) {
-        // double min = double.parse('${appointmentBuscar[index].date}');
-        // double max = double.parse('${appointmentBuscar[index].hour}');
-
-        // double wt = double.parse('${appointmentBuscar[index].idDepartment}');
-        return SizedBox(
-          height: 250,
-          child: Card(
-            elevation: 20,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        return Stack(
+          children: [
+            Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                            '${appointmentBuscar[index].date}'.substring(0, 10),
-                            style: const TextStyle(fontSize: 20)),
-                        // if (wt > 0.0)
-                        Text('${appointmentBuscar[index].idDepartment}',
-                            style: const TextStyle(fontSize: 20))
-                      ]),
-                  const Divider(color: Colors.black),
-                  Text('${appointmentBuscar[index].hour}',
-                      style: const TextStyle(fontSize: 35),
-                      textAlign: TextAlign.center),
-                  const Divider(color: Colors.black),
-                  IconButton(
-                      onPressed: () async {
-                        appointmentService
-                            .deleteProduct('${appointmentBuscar[index].id}');
-                        Navigator.pushReplacementNamed(context, 'userscreen');
-                      },
-                      icon: Icon(Icons.delete)),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     Container(
-                  //         margin: EdgeInsets.all(10),
-                  //         width: 150,
-                  //         height: 50,
-                  //         child: SpinBox(
-                  //             min: min,
-                  //             max: max,
-                  //             step: 0.1,
-                  //             readOnly: true,
-                  //             decimals: 2,
-                  //             value: mid,
-                  //             onChanged: (value) {
-                  //               mid = value;
-                  //             })),
-                  //     const Divider(color: Colors.black),
-                  //     GFIconButton(
-                  //       onPressed: () {},
-                  //       icon: const Icon(
-                  //         Icons.add_shopping_cart_sharp,
-                  //         color: Colors.white,
-                  //         size: 30,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                ]),
-          ),
+                          '${appointmentBuscar[index].date != null ? appointmentBuscar[index].date!.substring(0, 10) : ''}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Divider(color: Colors.black),
+                    Text(
+                      '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                    onPressed: () async {
+                      appointmentService
+                          .deleteProduct('${appointmentBuscar[index].id}');
+                      Navigator.pushReplacementNamed(context, 'userscreen');
+                    },
+                    icon: Icon(Icons.delete)),
+              ),
+            ),
+          ],
         );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return const Divider();
       },
     );
   }
