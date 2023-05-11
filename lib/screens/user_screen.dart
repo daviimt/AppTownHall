@@ -208,6 +208,11 @@ class _UserScreenState extends State<UserScreen> {
                           '${appointmentBuscar[index].date != null ? appointmentBuscar[index].date!.substring(0, 10) : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Text(
                           '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
                           style: const TextStyle(fontSize: 16),
@@ -217,7 +222,7 @@ class _UserScreenState extends State<UserScreen> {
                     const SizedBox(height: 10),
                     Divider(color: Colors.black),
                     Text(
-                      '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
+                      '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour!.substring(0, 5) : ''}',
                       style: const TextStyle(
                           fontSize: 22, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.start,
