@@ -178,3 +178,32 @@ class UserService extends ChangeNotifier {
     }
   }
 }
+
+class GetDepartments extends ChangeNotifier {
+  final String _baseUrl = 'semillero.allsites.es';
+
+  List<Department> getAllDepartment = [];
+
+  GetDepartments() {
+    print('Inicializando');
+
+    getDepartmentsName();
+  }
+
+  getDepartmentsName() async {
+    print('INCOMPANIES');
+    var url = Uri.http(_baseUrl, '/public/api/companies');
+
+    final encodedFormData = utf8.encode(json.encode(""));
+    final resp = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: encodedFormData);
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+
+    getAllDepartment = decodedResp["data"]["name"];
+    notifyListeners();
+  }
+}

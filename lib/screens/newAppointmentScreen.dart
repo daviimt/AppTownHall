@@ -3,8 +3,10 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:townhall/models/models.dart';
-import 'package:townhall/providers/login_form_provider%20copy.dart';
+import 'package:townhall/providers/appointment_form_provider.dart';
+import 'package:townhall/providers/department_form_provider.dart';
 import 'package:townhall/screens/screens.dart';
+import 'package:townhall/services/appointmentService%20copy.dart';
 import '../providers/providers.dart';
 import '../services/services.dart';
 import '../ui/input_decorations.dart';
@@ -34,7 +36,7 @@ class _NewAppointmentScreen extends State<NewAppointmentScreen> {
                   style: Theme.of(context).textTheme.headline4),
               SizedBox(height: 30),
               ChangeNotifierProvider(
-                  create: (_) => LoginFormProvider(), child: _LoginForm())
+                  create: (_) => AppointmentFormProvider(), child: _Form())
             ],
           )),
           SizedBox(height: 50),
@@ -56,16 +58,18 @@ class _NewAppointmentScreen extends State<NewAppointmentScreen> {
   }
 }
 
-class _LoginForm extends StatefulWidget {
-  const _LoginForm({Key? key}) : super(key: key);
+class _Form extends StatefulWidget {
+  const _Form({Key? key}) : super(key: key);
 
   @override
-  State<_LoginForm> createState() => __LoginForm();
+  State<_Form> createState() => __Form();
 }
 
-class __LoginForm extends State<_LoginForm> {
+class __Form extends State<_Form> {
   final userService = UserService();
   User user = User();
+  List<Department> departments = [];
+  final departmentService = DepartmentService();
 
   DateTime selectedDate =
       DateTime(10); // Variable para almacenar la fecha seleccionada
@@ -85,6 +89,15 @@ class __LoginForm extends State<_LoginForm> {
     }
   }
 
+  Future getDepartments() async {
+    await departmentService.getListDepartments();
+    setState(() {
+      departments = departmentService.departments;
+      print("CUENTA");
+      print(departments.length);
+    });
+  }
+
   Future getUser() async {
     await userService.getUser();
     User us = await userService.getUser();
@@ -97,15 +110,22 @@ class __LoginForm extends State<_LoginForm> {
   void initState() {
     super.initState();
     getUser();
+    getDepartments();
   }
 
   @override
   Widget build(BuildContext context) {
-    final loginForm = Provider.of<AppointmentFormProvider>(context);
-
+    final appointmentForm = Provider.of<AppointmentFormProvider>(context);
+    //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
+    List<Department> options = [];
+    if (departments.isNotEmpty) {
+      for (var i = 0; i < departments.length; i++) {
+        options.add(departments[i]);
+      }
+    }
     return Container(
       child: Form(
-        key: loginForm.formKey,
+        key: appointmentForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -115,7 +135,7 @@ class __LoginForm extends State<_LoginForm> {
                       showTitleActions: true,
                       minTime: DateTime.now(),
                       maxTime: DateTime(2070, 6, 7),
-                      onChanged: (value) => loginForm.date = value,
+                      onChanged: (value) => appointmentForm.date = value,
                       currentTime: DateTime.now(),
                       locale: LocaleType.es);
                 },
@@ -125,29 +145,48 @@ class __LoginForm extends State<_LoginForm> {
                 )),
             SizedBox(height: 30),
             TextButton(
-                onPressed: () {
-                  DatePicker.showDatePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime.now(),
-                      maxTime: DateTime(2070, 6, 7),
-                      onChanged: (value) => loginForm.date = value,
-                      currentTime: DateTime.now(),
-                      locale: LocaleType.es);
-                },
-                child: Text(
-                  'Hour',
-                  style: TextStyle(color: Colors.blue),
-                )),
+              onPressed: () {
+                DatePicker.showTimePicker(
+                  context,
+                  showTitleActions: true,
+                  onChanged: (time) {
+                    appointmentForm.date = time;
+                    // Puedes hacer algo con la hora seleccionada aquí
+                  },
+                  currentTime: DateTime.now(),
+                  locale: LocaleType.es,
+                );
+              },
+              child: Text(
+                'Seleccionar Hora',
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
             SizedBox(height: 30),
-            TextFormField(
-              autocorrect: false,
-              initialValue: user.name,
-              keyboardType: TextInputType.text,
+            DropdownButtonFormField<Department>(
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'department',
-                  labelText: 'Department',
-                  prefixIcon: Icons.text_decrease),
-              onChanged: (value) => loginForm.idDepartment = int.parse(value),
+                  prefixIcon: Icons.view_week_outlined,
+                  hintText: '',
+                  labelText: 'Department'),
+              // value: selectedItem,
+              items: options
+                  .map(
+                    (depart) => DropdownMenuItem(
+                      value: depart,
+                      child: Text(depart.name.toString()),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                appointmentForm.idDepartment = (value?.id)!;
+              },
+              validator: (cicle) {
+                if (cicle != null) {
+                  return null;
+                } else {
+                  return 'Select a companie';
+                }
+              },
             ),
             SizedBox(height: 30),
             SizedBox(height: 30),
@@ -160,30 +199,32 @@ class __LoginForm extends State<_LoginForm> {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      loginForm.isLoading ? 'Wait' : 'Submit',
+                      appointmentForm.isLoading ? 'Wait' : 'Submit',
                       style: TextStyle(color: Colors.white),
                     )),
-                onPressed: loginForm.isLoading
+                onPressed: appointmentForm.isLoading
                     ? null
                     : () async {
-                        if (loginForm.date.isUtc ||
-                            loginForm.hour.isEmpty ||
-                            loginForm.idDepartment == 0) {
+                        if (appointmentForm.date.isUtc ||
+                            appointmentForm.hour.isEmpty ||
+                            appointmentForm.idDepartment == 0) {
                           customToast("Fiels can't be empty", context);
                         } else {
                           FocusScope.of(context).unfocus();
                           final authService =
                               Provider.of<AuthService>(context, listen: false);
 
-                          if (!loginForm.isValidForm()) return;
+                          if (!appointmentForm.isValidForm()) return;
 
-                          loginForm.isLoading = true;
-
+                          appointmentForm.isLoading = true;
+                          int idUser = await AuthService().readId();
                           // TODO: validar si el login es correcto
                           final String? errorMessage = await userService.update(
-                              loginForm.date,
-                              loginForm.hour,
-                              loginForm.idDepartment);
+                              appointmentForm.date.toString(),
+                              appointmentForm.hour,
+                              appointmentForm.idDepartment.toString(),
+                              idUser.toString(),
+                              idUser.toString());
 
                           if (errorMessage == '201') {
                             customToast('Updated', context);
@@ -193,7 +234,7 @@ class __LoginForm extends State<_LoginForm> {
                             // TODO: mostrar error en pantalla
                             customToast('User registered', context);
 
-                            loginForm.isLoading = false;
+                            appointmentForm.isLoading = false;
                           } else {
                             customToast('Server error', context);
                           }
