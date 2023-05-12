@@ -29,7 +29,8 @@ class _HeaderIcon extends StatelessWidget {
       child: Container(
         width: double.infinity,
         margin: const EdgeInsets.only(top: 30),
-        child: const Icon(Icons.person_pin, color: Colors.white, size: 100),
+        child: const Icon(Icons.account_balance_rounded,
+            color: Colors.white, size: 100),
       ),
     );
   }
