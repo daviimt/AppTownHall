@@ -259,22 +259,59 @@ class _ManagerScreenState extends State<ManagerScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(71, 240, 255, 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Colors.black,
-                    onPressed: () async {
-                      appointmentService
-                          .deleteProduct('${appointmentBuscar[index].id}');
-                      Navigator.pushReplacementNamed(context, 'managerScreen');
-                    },
-                  ),
-                ),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(71, 240, 255, 1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: PopupMenuButton(
+                      itemBuilder: (BuildContext context) {
+                        return <PopupMenuEntry>[
+                          PopupMenuItem(
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.featured_play_list_outlined),
+                                  color: Colors.black,
+                                  onPressed: () async {
+                                    appointmentService.deleteProduct(
+                                        '${appointmentBuscar[index].id}');
+                                    Navigator.pushReplacementNamed(
+                                        context, 'userscreen');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  color: Colors.black,
+                                  onPressed: () async {
+                                    appointmentService.deleteProduct(
+                                        '${appointmentBuscar[index].id}');
+                                    Navigator.pushReplacementNamed(
+                                        context, 'userscreen');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ];
+                      },
+                      onSelected: (value) {
+                        if (value == 'Opcion 1') {
+                          Provider.of<AuthService>(context, listen: false)
+                              .logout();
+                          Navigator.pushReplacementNamed(context, 'login');
+                        } else if (value == 'Opcion 2') {
+                          // Lógica para la opción 2
+                        }
+                      },
+                    )),
               ),
             ),
           ],
