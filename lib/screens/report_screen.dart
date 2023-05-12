@@ -1,5 +1,6 @@
 import 'package:townhall/Models/models.dart';
 import 'package:townhall/services/appointmentService.dart';
+import 'package:townhall/services/reportService.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -7,26 +8,25 @@ import 'package:provider/provider.dart';
 import 'package:townhall/widgets/background.dart';
 import '../widgets/widgets.dart';
 
-class ManagerScreen extends StatefulWidget {
-  const ManagerScreen({Key? key}) : super(key: key);
+class ReportScreen extends StatefulWidget {
+  const ReportScreen({Key? key}) : super(key: key);
 
   @override
-  State<ManagerScreen> createState() => _ManagerScreenState();
+  State<ReportScreen> createState() => ReportScreenState();
 }
 
-class _ManagerScreenState extends State<ManagerScreen> {
-  final appointmentService = AppointmentService();
+class ReportScreenState extends State<ReportScreen> {
+  final appointmentService = ReportService();
   final userService = UserService();
 
-  List<Appointment> appointmentBuscar = [];
-  List<Appointment> appointments = [];
+  List<Report> appointmentBuscar = [];
+  List<Report> appointments = [];
   String user = "";
   int cont = 0;
   bool desactivate = true;
 
   Future getAppointments() async {
-    await appointmentService
-        .getAppointmentsManager(await AuthService().readId());
+    await appointmentService.getListReports();
     setState(() {
       appointments = appointmentService.appointments;
 
@@ -62,13 +62,13 @@ class _ManagerScreenState extends State<ManagerScreen> {
   }
 
   void _runFilter(String enteredKeyword) {
-    List<Appointment> results = [];
+    List<Report> results = [];
     if (enteredKeyword.isEmpty) {
       results = appointments;
     } else {
       results = appointments
           .where((x) =>
-              x.date!.toLowerCase().contains(enteredKeyword.toLowerCase()))
+              x.data!.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
     }
     setState(() {
@@ -222,7 +222,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].date != null ? appointmentBuscar[index].date!.substring(0, 10) : ''}',
+                          '${appointmentBuscar[index].data != null ? appointmentBuscar[index].data!.substring(0, 10) : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -231,7 +231,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
+                          '${appointmentBuscar[index].resolution != null ? appointmentBuscar[index].resolution! : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -239,7 +239,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                     const SizedBox(height: 10),
                     Divider(color: Colors.black),
                     Text(
-                      '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour!.substring(0, 5) : ''}',
+                      '${appointmentBuscar[index].idAppointment != null ? appointmentBuscar[index].idAppointment! : ''}',
                       style: const TextStyle(
                           fontSize: 22, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.start,
@@ -275,10 +275,10 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                   icon: Icon(Icons.featured_play_list_outlined),
                                   color: Colors.black,
                                   onPressed: () async {
-                                    appointmentService.deleteProduct(
+                                    appointmentService.deleteReport(
                                         '${appointmentBuscar[index].id}');
                                     Navigator.pushReplacementNamed(
-                                        context, 'managerscreen');
+                                        context, 'reportscreen');
                                   },
                                 ),
                               ],
@@ -291,10 +291,10 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                   icon: Icon(Icons.delete),
                                   color: Colors.black,
                                   onPressed: () async {
-                                    appointmentService.deleteProduct(
+                                    appointmentService.deleteReport(
                                         '${appointmentBuscar[index].id}');
                                     Navigator.pushReplacementNamed(
-                                        context, 'managerscreen');
+                                        context, 'reportscreen');
                                   },
                                 ),
                               ],

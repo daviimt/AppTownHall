@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:townhall/screens/manager_screen.dart';
 import 'package:townhall/screens/newAppointmentScreen.dart';
 import 'package:townhall/screens/prueba.dart';
+import 'package:townhall/screens/report_screen.dart';
 
 import 'package:townhall/screens/screens.dart';
 import 'package:townhall/screens/update_screen.dart';
@@ -59,10 +60,11 @@ class MyApp extends StatelessWidget {
           'home': (_) => const HomeScreen(),
           'login': (_) => LoginScreen(),
           'register': (_) => RegisterScreen(),
-          'updatescreen': (_) => UpdateScreen(),
+          'updatescreen': (_) => const UpdateScreen(),
           'userscreen': (_) => const UserScreen(),
           'managerscreen': (_) => const ManagerScreen(),
-          'newappointmentscreen': (_) => NewAppointmentScreen(),
+          'newappointmentscreen': (_) => const NewAppointmentScreen(),
+          'reportscreen': (_) => const ReportScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(
