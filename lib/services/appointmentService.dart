@@ -78,6 +78,40 @@ class AppointmentService extends ChangeNotifier {
     return appointmentList;
   }
 
+//GET APPOINTMENT MANAGER
+  getAppointmentsManager(String id) async {
+    appointments.clear();
+    String? token = await AuthService().readToken();
+
+    final url = Uri.http(_baseUrl, '/api/manager/appointments/$id');
+
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    final List<dynamic> decodedResp = json.decode(resp.body);
+
+    List<Appointment> appointmentList = decodedResp
+        .map((e) => Appointment(
+              id: e['id'],
+              date: e['date'],
+              hour: e['hour'],
+              idDepartment: e['idDepartment'],
+              idManager: e['idManager'],
+              idUser: e['idUser'],
+            ))
+        .toList();
+
+    appointments = appointmentList;
+    isLoading = false;
+    notifyListeners();
+
+    return appointmentList;
+  }
+
 //GET APPOINTMENT
   Future<Appointment> getAppointment(String id) async {
     String? token = await AuthService().readToken();
