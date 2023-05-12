@@ -180,8 +180,7 @@ class _UserScreenState extends State<UserScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.all_inbox_rounded), label: 'Appointments'),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Appointments'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
         ],
