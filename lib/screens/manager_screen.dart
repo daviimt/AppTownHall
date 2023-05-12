@@ -81,9 +81,9 @@ class _ManagerScreenState extends State<ManagerScreen> {
     // ignore: no_leading_underscores_for_local_identifiers
     void _onItemTapped(int index) {
       if (index == 0) {
-        Navigator.pushReplacementNamed(context, 'managerScreen');
+        Navigator.pushReplacementNamed(context, 'managerscreen');
       } else {
-        Navigator.pushReplacementNamed(context, 'updatescreen');
+        Navigator.pushReplacementNamed(context, 'reportscreen');
       }
     }
 
@@ -184,7 +184,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.all_inbox_rounded), label: 'Appointments'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
+              icon: Icon(Icons.featured_play_list_outlined), label: 'Reports'),
         ],
         currentIndex: 0, //New
         onTap: _onItemTapped,
