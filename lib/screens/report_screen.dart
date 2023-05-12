@@ -114,7 +114,7 @@ class ReportScreenState extends State<ReportScreen> {
             },
           ),
           Text(
-            'Appointments',
+            'Reports',
             style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
           ),
           Text(
@@ -186,7 +186,7 @@ class ReportScreenState extends State<ReportScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.featured_play_list_outlined), label: 'Reports'),
         ],
-        currentIndex: 0, //New
+        currentIndex: 1, //New
         onTap: _onItemTapped,
       ),
     );
