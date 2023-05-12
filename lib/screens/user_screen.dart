@@ -172,7 +172,7 @@ class _UserScreenState extends State<UserScreen> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         fillColor: Colors.blue,
-        child: Icon(Icons.fiber_new_rounded, color: Colors.white),
+        child: Icon(Icons.add_to_photos_rounded, color: Colors.white),
         constraints: BoxConstraints.tightFor(
           width: 40.0,
           height: 40.0,
@@ -181,7 +181,7 @@ class _UserScreenState extends State<UserScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.list), label: 'Appointments'),
+              icon: Icon(Icons.all_inbox_rounded), label: 'Appointments'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
         ],
