@@ -1,5 +1,6 @@
 import 'package:townhall/Models/models.dart';
 import 'package:townhall/services/appointmentService.dart';
+import 'package:townhall/services/departmentService.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -16,9 +17,12 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   final appointmentService = AppointmentService();
+  final departmentService = DepartmentService();
   final userService = UserService();
 
   List<Appointment> appointmentBuscar = [];
+  List<Department> departmentsList = [];
+  List<String> departmentsName = [];
   List<Appointment> appointments = [];
   String user = "";
   int cont = 0;
@@ -42,6 +46,41 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
+  Future getDepartments() async {
+    await departmentService.getListDepartments();
+    setState(() {
+      print('ENTRA');
+      departmentsList = departmentService.departments;
+      print(departmentsList);
+
+      List<int> departmentsListId = [];
+      departmentsList.forEach((element) {
+        departmentsListId.add(element.id!);
+      });
+      print(departmentsListId);
+
+      List<String> departmentNames = [];
+
+      print("BUCLE APPOINTMENT");
+      print(appointmentBuscar.length);
+      for (int i = 0; i < appointmentBuscar.length; i++) {
+        print("APPOINTMENT ID: " + appointmentBuscar[i].id.toString());
+
+        if (departmentsListId.contains(appointmentBuscar[i].id)) {
+          print("BUCLE DEPARTMENT");
+
+//VOY POR AQUI
+          for (int j = 0; j < departmentsList.length; j++) {
+            departmentNames.add(departmentsList[j].name!);
+          }
+        }
+      }
+      print('Lista' + departmentNames.toString());
+
+      departmentsName = departmentNames;
+    });
+  }
+
   Future getUser() async {
     await userService.getUser();
     String id = await userService.getUser() as String;
@@ -53,11 +92,14 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
-    // ignore: avoid_print
+
     print('iniciando');
-    getAppointments();
-    //getUser();
-    // getFamilies();
+    getAppointments().then((_) {
+      print('DEPARTAMENTOS');
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        getDepartments();
+      });
+    });
   }
 
   void _runFilter(String enteredKeyword) {
@@ -230,7 +272,7 @@ class _UserScreenState extends State<UserScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
+                          '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour!.substring(0, 5) : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
