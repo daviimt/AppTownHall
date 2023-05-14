@@ -121,32 +121,41 @@ class _LoginForm extends StatelessWidget {
                 onPressed: loginForm.isLoading
                     ? null
                     : () async {
-                        FocusScope.of(context).unfocus();
-                        final authService =
-                            Provider.of<AuthService>(context, listen: false);
-
-                        if (!loginForm.isValidForm()) return;
-
-                        loginForm.isLoading = true;
-
-                        // TODO: validar si el login es correcto
-                        final String? errorMessage = await authService.register(
-                            loginForm.username,
-                            loginForm.password,
-                            loginForm.dni,
-                            loginForm.name,
-                            loginForm.surname);
-
-                        if (errorMessage == '200') {
-                          customToast('Registered', context);
-                          Navigator.pushReplacementNamed(context, 'login');
-                        } else if (errorMessage == '500') {
-                          // TODO: mostrar error en pantalla
-                          customToast('User registered', context);
-
-                          loginForm.isLoading = false;
+                        if (loginForm.dni.isEmpty ||
+                            loginForm.username.isEmpty ||
+                            loginForm.password.isEmpty ||
+                            loginForm.name.isEmpty ||
+                            loginForm.surname.isEmpty) {
+                          customToast("Fiels can't be empty", context);
                         } else {
-                          customToast('Server error', context);
+                          FocusScope.of(context).unfocus();
+                          final authService =
+                              Provider.of<AuthService>(context, listen: false);
+
+                          if (!loginForm.isValidForm()) return;
+
+                          loginForm.isLoading = true;
+
+                          // TODO: validar si el login es correcto
+                          final String? errorMessage =
+                              await authService.register(
+                                  loginForm.username,
+                                  loginForm.password,
+                                  loginForm.dni,
+                                  loginForm.name,
+                                  loginForm.surname);
+
+                          if (errorMessage == '200') {
+                            customToast('Registered', context);
+                            Navigator.pushReplacementNamed(context, 'login');
+                          } else if (errorMessage == '500') {
+                            // TODO: mostrar error en pantalla
+                            customToast('User registered', context);
+
+                            loginForm.isLoading = false;
+                          } else {
+                            customToast('Server error', context);
+                          }
                         }
                       })
           ],
