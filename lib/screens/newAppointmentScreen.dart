@@ -233,7 +233,7 @@ class __Form extends State<_Form> {
                                 da[0],
                                 appointmentForm.hour,
                                 appointmentForm.idDepartment.toString(),
-                                1,
+                                55,
                                 idUser);
 
                         if (errorMessage == '201') {

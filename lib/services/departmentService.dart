@@ -10,7 +10,8 @@ class DepartmentService extends ChangeNotifier {
   final String _baseUrl = '192.168.1.42:8080';
   bool isLoading = true;
   List<Department> departments = [];
-  String department = "";
+  String departmentName = "";
+  Department department = Department();
   Department a = Department();
   final storage = const FlutterSecureStorage();
 
@@ -74,11 +75,11 @@ class DepartmentService extends ChangeNotifier {
   }
 
 //GET Department
-  Future<Department> getDepartment(String id) async {
+  Future<Department> getDepartment(int id) async {
     String? token = await AuthService().readToken();
 
-    final url = Uri.http(_baseUrl, '/api/all/products/$id');
-
+    final url = Uri.http(_baseUrl, '/api/all/department/$id');
+    print(url);
     isLoading = true;
     notifyListeners();
     final resp = await http.get(
@@ -87,13 +88,13 @@ class DepartmentService extends ChangeNotifier {
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
-    Department department = Department(
+    Department departmentDTO = Department(
       id: decodedResp['id'],
       name: decodedResp['name'],
       description: decodedResp['description'],
     );
 
-    a = department;
+    department = departmentDTO;
 
     isLoading = false;
     notifyListeners();

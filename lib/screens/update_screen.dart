@@ -95,7 +95,7 @@ class __LoginForm extends State<_LoginForm> {
               initialValue: user.username,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                hintText: 'username',
+                hintText: user.username.toString(),
                 labelText: 'Username',
                 prefixIcon: Icons.account_circle_sharp,
               ),
@@ -107,7 +107,7 @@ class __LoginForm extends State<_LoginForm> {
               initialValue: user.dni,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'dni',
+                  hintText: user.dni.toString(),
                   labelText: 'Dni',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => loginForm.dni = value,
@@ -118,7 +118,7 @@ class __LoginForm extends State<_LoginForm> {
               initialValue: user.name,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'name',
+                  hintText: user.name.toString(),
                   labelText: 'Name',
                   prefixIcon: Icons.text_decrease),
               onChanged: (value) => loginForm.name = value,
@@ -129,7 +129,7 @@ class __LoginForm extends State<_LoginForm> {
               initialValue: user.surname,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'surname',
+                  hintText: user.surname.toString(),
                   labelText: 'Surname',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => loginForm.surname = value,

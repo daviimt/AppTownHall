@@ -24,6 +24,7 @@ class _UserScreenState extends State<UserScreen> {
   List<Department> departmentsList = [];
   List<String> departmentsName = [];
   List<Appointment> appointments = [];
+  Department department = Department();
   String user = "";
   int cont = 0;
   bool desactivate = true;
@@ -87,6 +88,13 @@ class _UserScreenState extends State<UserScreen> {
     String id = await userService.getUser() as String;
     setState(() {
       user = id;
+    });
+  }
+
+  Future getDepartment(int id, index) async {
+    await departmentService.getDepartment(appointmentBuscar[index].id!);
+    setState(() {
+      department = departmentService.department;
     });
   }
 
@@ -242,6 +250,7 @@ class _UserScreenState extends State<UserScreen> {
       ),
       itemCount: appointmentBuscar.length,
       itemBuilder: (BuildContext context, index) {
+        getDepartment(appointmentBuscar[index].idDepartment!, index);
         return Stack(
           children: [
             Card(
@@ -268,7 +277,7 @@ class _UserScreenState extends State<UserScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].date != null ? appointmentBuscar[index].date!.substring(0, 10) : ''}',
+                          department.name.toString(),
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
