@@ -217,7 +217,7 @@ class __LoginForm extends State<_LoginForm> {
       fullWidth: true,
       toastHorizontalMargin: 25,
       borderRadius: BorderRadius.circular(15),
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: Colors.blueGrey,
       alignment: Alignment.topCenter,
       position: StyledToastPosition.bottom,
       duration: const Duration(seconds: 3),
