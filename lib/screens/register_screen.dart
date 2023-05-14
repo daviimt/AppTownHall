@@ -10,37 +10,39 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: AuthBackground(
             child: SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: 250),
-          CardContainer(
-              child: Column(
+          child: Column(
             children: [
-              SizedBox(height: 10),
-              Text('Create Account',
-                  style: Theme.of(context).textTheme.headline4),
-              SizedBox(height: 30),
-              ChangeNotifierProvider(
-                  create: (_) => LoginFormProvider(), child: _LoginForm())
-            ],
-          )),
-          SizedBox(height: 50),
-          TextButton(
-              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
-              style: ButtonStyle(
-                  overlayColor:
-                      MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all(StadiumBorder())),
-              child: Text(
-                'Log In',
-                style: TextStyle(fontSize: 18, color: Colors.black87),
+              SizedBox(height: 250),
+              CardContainer(
+                  child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  Text('Create Account',
+                      style: Theme.of(context).textTheme.headline4),
+                  SizedBox(height: 30),
+                  ChangeNotifierProvider(
+                      create: (_) => LoginFormProvider(), child: _LoginForm())
+                ],
               )),
-          SizedBox(height: 50),
-        ],
-      ),
-    )));
+              SizedBox(height: 50),
+              TextButton(
+                  onPressed: () =>
+                      Navigator.pushReplacementNamed(context, 'login'),
+                  style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.indigo.withOpacity(0.1)),
+                      shape: MaterialStateProperty.all(StadiumBorder())),
+                  child: Text(
+                    'Log In',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  )),
+              SizedBox(height: 50),
+            ],
+          ),
+        )));
   }
 }
 
