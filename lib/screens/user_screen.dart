@@ -65,8 +65,9 @@ class _UserScreenState extends State<UserScreen> {
       print(appointmentBuscar.length);
       for (int i = 0; i < appointmentBuscar.length; i++) {
         print("APPOINTMENT ID: " + appointmentBuscar[i].id.toString());
-
-        if (departmentsListId.contains(appointmentBuscar[i].id)) {
+        print(departmentsListId.contains(appointmentBuscar[i].id));
+        print(appointmentBuscar[i].id);
+        if (!departmentsListId.contains(appointmentBuscar[i].id)) {
           print("BUCLE DEPARTMENT");
 
 //VOY POR AQUI
@@ -94,12 +95,7 @@ class _UserScreenState extends State<UserScreen> {
     super.initState();
 
     print('iniciando');
-    getAppointments().then((_) {
-      print('DEPARTAMENTOS');
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        getDepartments();
-      });
-    });
+    getAppointments().then((_) => getDepartments());
   }
 
   void _runFilter(String enteredKeyword) {
@@ -272,7 +268,7 @@ class _UserScreenState extends State<UserScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour!.substring(0, 5) : ''}',
+                          '${appointmentBuscar[index].date != null ? appointmentBuscar[index].date!.substring(0, 10) : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
