@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_
 
 import 'dart:convert';
 
@@ -31,7 +31,7 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print(decodedResp);
+
     await storage.write(key: 'id', value: decodedResp['id'].toString());
     isLoading = false;
     notifyListeners();
@@ -58,7 +58,6 @@ class UserService extends ChangeNotifier {
         role: roleUser,
         token: tokenUser);
 
-    print(us.dni);
     return us;
   }
 
@@ -166,8 +165,7 @@ class UserService extends ChangeNotifier {
         body: encodedFormData);
 
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print("ESTO ES LO QUE QUIERO");
-    print(decodedResp);
+
     if (resp.statusCode == 200) {
       await storage.write(key: 'token', value: decodedResp['token']);
       await storage.write(key: 'id', value: decodedResp['id'].toString());
@@ -185,13 +183,10 @@ class GetDepartments extends ChangeNotifier {
   List<Department> getAllDepartment = [];
 
   GetDepartments() {
-    print('Inicializando');
-
     getDepartmentsName();
   }
 
   getDepartmentsName() async {
-    print('INCOMPANIES');
     var url = Uri.http(_baseUrl, '/public/api/companies');
 
     final encodedFormData = utf8.encode(json.encode(""));

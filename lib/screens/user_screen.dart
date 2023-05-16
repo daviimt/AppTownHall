@@ -91,8 +91,8 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
-  Future getDepartment(int id, index) async {
-    await departmentService.getDepartment(appointmentBuscar[index].id!);
+  Future getDepartment(int id) async {
+    await departmentService.getDepartment(id);
     setState(() {
       department = departmentService.department;
     });
@@ -103,7 +103,7 @@ class _UserScreenState extends State<UserScreen> {
     super.initState();
 
     print('iniciando');
-    getAppointments().then((_) => getDepartments());
+    getAppointments();
   }
 
   void _runFilter(String enteredKeyword) {
@@ -250,7 +250,9 @@ class _UserScreenState extends State<UserScreen> {
       ),
       itemCount: appointmentBuscar.length,
       itemBuilder: (BuildContext context, index) {
-        getDepartment(appointmentBuscar[index].idDepartment!, index);
+        print("ESTO ES EL ID");
+        print(appointmentBuscar[index].idDepartment!);
+        //getDepartment(appointmentBuscar[index].idDepartment!);
         return Stack(
           children: [
             Card(
@@ -277,7 +279,8 @@ class _UserScreenState extends State<UserScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          department.name.toString(),
+                          //department.name.toString(),
+                          'name',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],

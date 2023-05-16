@@ -77,9 +77,10 @@ class DepartmentService extends ChangeNotifier {
 //GET Department
   Future<Department> getDepartment(int id) async {
     String? token = await AuthService().readToken();
-
+    print("COSAS");
     final url = Uri.http(_baseUrl, '/api/all/department/$id');
     print(url);
+    print(id);
     isLoading = true;
     notifyListeners();
     final resp = await http.get(
@@ -87,7 +88,7 @@ class DepartmentService extends ChangeNotifier {
       headers: {"Authorization": "Bearer $token"},
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
+    print(decodedResp);
     Department departmentDTO = Department(
       id: decodedResp['id'],
       name: decodedResp['name'],
@@ -95,7 +96,7 @@ class DepartmentService extends ChangeNotifier {
     );
 
     department = departmentDTO;
-
+    print(department.name);
     isLoading = false;
     notifyListeners();
     return department;
