@@ -105,26 +105,22 @@ class ReportService extends ChangeNotifier {
   //   return appointment;
   // }
 
-//CREATE APPOINTMENT
+//CREATE REPORT
   Future create(
-    String date,
-    String hour,
-    String idDepartment,
-    int idManager,
-    int idUser,
+    String data,
+    bool resolution,
+    int idAppointment,
   ) async {
     String? token = await AuthService().readToken();
     isLoading = false;
     notifyListeners();
     final Map<String, dynamic> productData = {
-      'date': date,
-      'hour': hour,
-      'idDepartment': idDepartment,
-      'idManager': idManager,
-      'idUser': idUser,
+      'data': data,
+      'resolution': resolution,
+      'idAppointment': idAppointment,
     };
 
-    final url = Uri.http(_baseUrl, '/api/user/appointment');
+    final url = Uri.http(_baseUrl, '/api/manager/report');
 
     final resp = await http.post(
       url,

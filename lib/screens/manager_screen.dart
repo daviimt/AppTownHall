@@ -272,15 +272,30 @@ class _ManagerScreenState extends State<ManagerScreen> {
                             child: Row(
                               children: [
                                 IconButton(
+                                  icon: Icon(Icons.feed_rounded),
+                                  color: Colors.black,
+                                  onPressed: () async {
+                                    Navigator.pushNamed(context, 'reportscreen',
+                                        arguments: appointmentBuscar[index].id);
+                                  },
+                                ),
+                                Text('List Report')
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            child: Row(
+                              children: [
+                                IconButton(
                                   icon: Icon(Icons.featured_play_list_outlined),
                                   color: Colors.black,
                                   onPressed: () async {
-                                    appointmentService.deleteProduct(
-                                        '${appointmentBuscar[index].id}');
-                                    Navigator.pushReplacementNamed(
-                                        context, 'managerscreen');
+                                    Navigator.pushNamed(
+                                        context, 'newreportscreen',
+                                        arguments: appointmentBuscar[index].id);
                                   },
                                 ),
+                                Text('New Report')
                               ],
                             ),
                           ),
@@ -297,6 +312,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                         context, 'managerscreen');
                                   },
                                 ),
+                                Text('Delete Report')
                               ],
                             ),
                           ),

@@ -222,7 +222,7 @@ class ReportScreenState extends State<ReportScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].data != null ? appointmentBuscar[index].data!.substring(0, 10) : ''}',
+                          '${appointmentBuscar[index].data}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],

@@ -1,13 +1,16 @@
 import 'package:townhall/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:townhall/providers/report_form_provider.dart';
 import 'package:townhall/screens/manager_screen.dart';
 import 'package:townhall/screens/newAppointmentScreen.dart';
+import 'package:townhall/screens/newReportScreen.dart';
 import 'package:townhall/screens/prueba.dart';
 import 'package:townhall/screens/report_screen.dart';
 
 import 'package:townhall/screens/screens.dart';
 import 'package:townhall/screens/update_screen.dart';
+import 'package:townhall/services/appointmentService.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 
@@ -30,6 +33,14 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => VerifyService(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AppointmentService(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ReportFormProvider(),
           lazy: false,
         ),
         // ChangeNotifierProvider(create: (_) => AuthService()),
@@ -56,6 +67,15 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'townhall',
         initialRoute: 'login',
+        onGenerateRoute: (settings) {
+          if (settings.name == 'newreportscreen') {
+            final int id = settings.arguments as int;
+            return MaterialPageRoute(
+              builder: (context) => NewReportScreen(idAppointment: id),
+            );
+          }
+          return null;
+        },
         routes: {
           'home': (_) => const HomeScreen(),
           'login': (_) => LoginScreen(),
