@@ -148,8 +148,9 @@ class __Form extends State<_Form> {
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'data',
                   labelText: 'Data',
-                  prefixIcon: Icons.account_circle_sharp),
+                  prefixIcon: Icons.summarize_rounded),
               onChanged: (value) => reportForm.data = value,
+              maxLines: null,
             ),
             SizedBox(height: 30),
             SizedBox(height: 30),

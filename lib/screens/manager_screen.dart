@@ -165,20 +165,6 @@ class _ManagerScreenState extends State<ManagerScreen> {
                 ),
               ),
       ),
-      floatingActionButton: RawMaterialButton(
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, 'newappointmentscreen');
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        fillColor: Colors.blue,
-        child: Icon(Icons.add_to_photos_rounded, color: Colors.white),
-        constraints: BoxConstraints.tightFor(
-          width: 40.0,
-          height: 40.0,
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
