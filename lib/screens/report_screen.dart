@@ -258,7 +258,7 @@ class ReportScreenState extends State<ReportScreen> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.featured_play_list_outlined),
+                                  icon: Icon(Icons.feed_rounded),
                                   color: Colors.black,
                                   onPressed: () async {
                                     appointmentService.deleteReport(
@@ -267,6 +267,7 @@ class ReportScreenState extends State<ReportScreen> {
                                         context, 'reportscreen');
                                   },
                                 ),
+                                Text('View Report')
                               ],
                             ),
                           ),
@@ -283,6 +284,7 @@ class ReportScreenState extends State<ReportScreen> {
                                         context, 'reportscreen');
                                   },
                                 ),
+                                Text('Delete Report')
                               ],
                             ),
                           ),

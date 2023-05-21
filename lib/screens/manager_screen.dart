@@ -346,7 +346,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                         context, 'managerscreen');
                                   },
                                 ),
-                                Text('Delete Report')
+                                Text('Delete Appointment')
                               ],
                             ),
                           ),
