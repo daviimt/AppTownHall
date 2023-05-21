@@ -144,7 +144,7 @@ class ReportService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final url = Uri.http(_baseUrl, '/api/all/report/$id');
+    final url = Uri.http(_baseUrl, '/api/manager/report/$id');
 
     final resp = await http.delete(
       url,
@@ -152,6 +152,7 @@ class ReportService extends ChangeNotifier {
     );
     isLoading = false;
     notifyListeners();
+    print(resp.statusCode);
     if (resp.statusCode == 200) {}
   }
 }

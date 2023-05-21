@@ -1,5 +1,6 @@
 import 'package:townhall/Models/models.dart';
 import 'package:townhall/services/appointmentService.dart';
+import 'package:townhall/services/reportService.dart';
 import 'package:townhall/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -17,23 +18,19 @@ class ManagerScreen extends StatefulWidget {
 class _ManagerScreenState extends State<ManagerScreen> {
   final appointmentService = AppointmentService();
   final userService = UserService();
+  final reportService = ReportService();
 
   List<Appointment> appointmentBuscar = [];
   List<Appointment> appointments = [];
+  List<Report> reports = [];
   String user = "";
   int cont = 0;
-  bool desactivate = true;
 
   Future getAppointments() async {
     await appointmentService
         .getAppointmentsManager(await AuthService().readId());
     setState(() {
       appointments = appointmentService.appointments;
-
-      cont = appointments.length;
-      if (cont >= 5) {
-        desactivate = false;
-      }
 
       appointmentBuscar = appointments;
       // for (int i = 0; i < appointments.length; i++) {
@@ -42,6 +39,37 @@ class _ManagerScreenState extends State<ManagerScreen> {
       // }
     });
   }
+
+  Future getReports() async {
+    await reportService.getListReports();
+    setState(() {
+      reports = reportService.appointments;
+      appointmentBuscar = appointments;
+      // for (int i = 0; i < appointments.length; i++) {
+      //   appointmentBuscar
+      //       .removeWhere((element) => (element.id == appointments[i].id));
+      // }
+    });
+  }
+
+  // Future getReports() async {
+  //   await appointmentService
+  //       .getAppointmentsManager(await AuthService().readId());
+  //   setState(() {
+  //     appointments = appointmentService.appointments;
+
+  //     cont = appointments.length;
+  //     if (cont >= 5) {
+  //       desactivate = false;
+  //     }
+
+  //     appointmentBuscar = appointments;
+  //     // for (int i = 0; i < appointments.length; i++) {
+  //     //   appointmentBuscar
+  //     //       .removeWhere((element) => (element.id == appointments[i].id));
+  //     // }
+  //   });
+  // }
 
   Future getUser() async {
     await userService.getUser();
@@ -57,6 +85,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
     // ignore: avoid_print
     print('iniciando');
     getAppointments();
+    getReports();
     //getUser();
     // getFamilies();
   }
@@ -191,6 +220,22 @@ class _ManagerScreenState extends State<ManagerScreen> {
       ),
       itemCount: appointmentBuscar.length,
       itemBuilder: (BuildContext context, index) {
+        bool desactivate = false;
+        cont = 0;
+        print('Cuenta' + cont.toString());
+        print(appointmentBuscar[index].id!);
+        for (int i = 0; i < reports.length; i++) {
+          print("entra");
+          print(appointmentBuscar[index].id!.toString() +
+              ' ' +
+              reports[i].idAppointment!.toString());
+          if (reports[i].idAppointment == appointmentBuscar[index].id) {
+            cont = cont + 1;
+          }
+        }
+        print('Cuenta Final' + cont.toString());
+        if (cont >= 1) desactivate = true;
+        print(desactivate);
         return Stack(
           children: [
             Card(
@@ -265,20 +310,24 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                         arguments: appointmentBuscar[index].id);
                                   },
                                 ),
-                                Text('List Report')
+                                Text('View Report')
                               ],
                             ),
                           ),
                           PopupMenuItem(
+                            enabled: !desactivate,
                             child: Row(
                               children: [
                                 IconButton(
                                   icon: Icon(Icons.featured_play_list_outlined),
                                   color: Colors.black,
                                   onPressed: () async {
-                                    Navigator.pushNamed(
-                                        context, 'newreportscreen',
-                                        arguments: appointmentBuscar[index].id);
+                                    if (!desactivate) {
+                                      Navigator.pushNamed(
+                                          context, 'newreportscreen',
+                                          arguments:
+                                              appointmentBuscar[index].id);
+                                    }
                                   },
                                 ),
                                 Text('New Report')

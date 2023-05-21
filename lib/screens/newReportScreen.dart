@@ -89,21 +89,6 @@ class __Form extends State<_Form> {
   DateTime selectedDate =
       DateTime(10); // Variable para almacenar la fecha seleccionada
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(), // Fecha inicial del selector
-      firstDate: DateTime(2020), // Fecha más antigua permitiºa
-      lastDate: DateTime(2025), // Fecha más reciente permitida
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
   Future getDepartments() async {
     await departmentService.getListDepartments();
     setState(() {
