@@ -208,7 +208,7 @@ class ReportScreenState extends State<ReportScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].data}',
+                          '${appointmentBuscar[index].data!.length > 10 ? appointmentBuscar[index].data!.substring(0, 10) + "..." : appointmentBuscar[index].data!}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -217,7 +217,7 @@ class ReportScreenState extends State<ReportScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].resolution != null ? appointmentBuscar[index].resolution! : ''}',
+                          '${appointmentBuscar[index].resolution == true ? 'Resolved' : 'Not Resolved'}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
