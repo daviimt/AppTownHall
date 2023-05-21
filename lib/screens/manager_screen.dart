@@ -302,7 +302,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                   color: Colors.black,
                                   onPressed: () async {
                                     if (desactivate) {
-                                      Navigator.pushNamed(
+                                      Navigator.pushReplacementNamed(
                                           context, 'reportscreen',
                                           arguments:
                                               appointmentBuscar[index].id);
@@ -322,7 +322,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                                   color: Colors.black,
                                   onPressed: () async {
                                     if (!desactivate) {
-                                      Navigator.pushNamed(
+                                      Navigator.pushReplacementNamed(
                                           context, 'newreportscreen',
                                           arguments:
                                               appointmentBuscar[index].id);
