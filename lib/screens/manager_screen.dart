@@ -256,7 +256,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${appointmentBuscar[index].hour != null ? appointmentBuscar[index].hour![0].toUpperCase() + appointmentBuscar[index].hour!.substring(1) : ''}',
+                          '${appointmentBuscar[index].id != null ? appointmentBuscar[index].id : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
