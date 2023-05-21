@@ -138,7 +138,6 @@ class __Form extends State<_Form> {
               maxLines: null,
             ),
             SizedBox(height: 30),
-            SizedBox(height: 30),
             DropdownButtonFormField<dynamic>(
               decoration: InputDecorations.authInputDecoration(
                   prefixIcon: Icons.view_week_outlined,
@@ -164,7 +163,6 @@ class __Form extends State<_Form> {
                 }
               },
             ),
-            SizedBox(height: 30),
             SizedBox(height: 30),
             MaterialButton(
                 shape: RoundedRectangleBorder(
