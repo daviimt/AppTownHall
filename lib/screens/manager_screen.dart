@@ -222,20 +222,14 @@ class _ManagerScreenState extends State<ManagerScreen> {
       itemBuilder: (BuildContext context, index) {
         bool desactivate = false;
         cont = 0;
-        print('Cuenta' + cont.toString());
-        print(appointmentBuscar[index].id!);
         for (int i = 0; i < reports.length; i++) {
-          print("entra");
-          print(appointmentBuscar[index].id!.toString() +
-              ' ' +
-              reports[i].idAppointment!.toString());
           if (reports[i].idAppointment == appointmentBuscar[index].id) {
             cont = cont + 1;
           }
         }
-        print('Cuenta Final' + cont.toString());
+
         if (cont >= 1) desactivate = true;
-        print(desactivate);
+
         return Stack(
           children: [
             Card(
@@ -300,14 +294,19 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       itemBuilder: (BuildContext context) {
                         return <PopupMenuEntry>[
                           PopupMenuItem(
+                            enabled: desactivate,
                             child: Row(
                               children: [
                                 IconButton(
                                   icon: Icon(Icons.feed_rounded),
                                   color: Colors.black,
                                   onPressed: () async {
-                                    Navigator.pushNamed(context, 'reportscreen',
-                                        arguments: appointmentBuscar[index].id);
+                                    if (desactivate) {
+                                      Navigator.pushNamed(
+                                          context, 'reportscreen',
+                                          arguments:
+                                              appointmentBuscar[index].id);
+                                    }
                                   },
                                 ),
                                 Text('View Report')
