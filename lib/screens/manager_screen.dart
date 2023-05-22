@@ -298,26 +298,6 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       itemBuilder: (BuildContext context) {
                         return <PopupMenuEntry>[
                           PopupMenuItem(
-                            enabled: desactivate,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.feed_rounded),
-                                  color: Colors.black,
-                                  onPressed: () async {
-                                    if (desactivate) {
-                                      Navigator.pushReplacementNamed(
-                                          context, 'reportscreen',
-                                          arguments:
-                                              appointmentBuscar[index].id);
-                                    }
-                                  },
-                                ),
-                                Text('View Report')
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
                             enabled: !desactivate,
                             child: Row(
                               children: [
