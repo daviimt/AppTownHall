@@ -11,7 +11,7 @@ class ReportService extends ChangeNotifier {
   bool isLoading = true;
   List<Report> appointments = [];
   String appointment = "";
-  Report a = Report();
+  Report report = Report();
   final storage = const FlutterSecureStorage();
 
 // GET REPORTS
@@ -76,34 +76,31 @@ class ReportService extends ChangeNotifier {
   }
 
 //GET APPOINTMENT
-  // Future<Report> getReport(String id) async {
-  //   String? token = await AuthService().readToken();
+  Future<Report> getReport(int id) async {
+    String? token = await AuthService().readToken();
 
-  //   final url = Uri.http(_baseUrl, '/api/all/products/$id');
+    final url = Uri.http(_baseUrl, '/api/manager/report/$id');
 
-  //   isLoading = true;
-  //   notifyListeners();
-  //   final resp = await http.get(
-  //     url,
-  //     headers: {"Authorization": "Bearer $token"},
-  //   );
-  //   final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
-  //   Appointment appointment = Appointment(
-  //     id: decodedResp['id'],
-  //     date: decodedResp['date'],
-  //     hour: decodedResp['hour'],
-  //     idDepartment: decodedResp['idDepartment'],
-  //     idManager: decodedResp['idManager'],
-  //     idUser: decodedResp['idUser'],
-  //   );
+    Report r = Report(
+      id: decodedResp['id'],
+      data: decodedResp['data'],
+      resolution: decodedResp['resolution'],
+    );
 
-  //   a = appointment;
+    report = r;
 
-  //   isLoading = false;
-  //   notifyListeners();
-  //   return appointment;
-  // }
+    isLoading = false;
+    notifyListeners();
+    return r;
+  }
 
 //CREATE REPORT
   Future create(

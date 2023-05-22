@@ -31,6 +31,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
         .getAppointmentsManager(await AuthService().readId());
     setState(() {
       appointments = appointmentService.appointments;
+      cont = appointments.length;
 
       appointmentBuscar = appointments;
       // for (int i = 0; i < appointments.length; i++) {

@@ -7,6 +7,7 @@ import 'package:townhall/screens/newAppointmentScreen.dart';
 import 'package:townhall/screens/newReportScreen.dart';
 import 'package:townhall/screens/prueba.dart';
 import 'package:townhall/screens/report_screen.dart';
+import 'package:townhall/screens/report_screen_alone.dart';
 
 import 'package:townhall/screens/screens.dart';
 import 'package:townhall/screens/update_screen.dart';
@@ -72,6 +73,11 @@ class MyApp extends StatelessWidget {
             final int id = settings.arguments as int;
             return MaterialPageRoute(
               builder: (context) => NewReportScreen(idAppointment: id),
+            );
+          } else if (settings.name == 'reportscreenAlone') {
+            final int id = settings.arguments as int;
+            return MaterialPageRoute(
+              builder: (context) => ReportScreenAlone(idReport: id),
             );
           }
           return null;

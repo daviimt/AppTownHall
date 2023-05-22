@@ -264,7 +264,8 @@ class ReportScreenState extends State<ReportScreen> {
                                     appointmentService.deleteReport(
                                         '${appointmentBuscar[index].id}');
                                     Navigator.pushReplacementNamed(
-                                        context, 'reportscreen');
+                                        context, 'reportscreenAlone',
+                                        arguments: appointmentBuscar[index].id);
                                   },
                                 ),
                                 Text('View Report')
