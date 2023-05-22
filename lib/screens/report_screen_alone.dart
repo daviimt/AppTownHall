@@ -35,10 +35,6 @@ class ReportScreenAloneState extends State<ReportScreenAlone> {
     setState(() {
       appointments = reportService.report;
       appointmentBuscar = appointments;
-      // for (int i = 0; i < appointments.length; i++) {
-      //   appointmentBuscar
-      //       .removeWhere((element) => (element.id == appointments[i].id));
-      // }
     });
   }
 
@@ -53,11 +49,9 @@ class ReportScreenAloneState extends State<ReportScreenAlone> {
   @override
   void initState() {
     super.initState();
-    // ignore: avoid_print
+
     print('iniciando');
     getReport();
-    //getUser();
-    // getFamilies();
   }
 
   @override
@@ -71,54 +65,58 @@ class ReportScreenAloneState extends State<ReportScreenAlone> {
       }
     }
 
-    // final articleService = Provider.of<ArticleService>(context, listen: false);
-    // articles = articleService.articles.cast<ArticleData>();
-    // for (int i = 0; i < articles.length; i++) {
-    //   if (articles[i].deleted == 1) {
-    //     print(articles[i]);
-    //   }
-    // }
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color.fromRGBO(184, 237, 243, 1),
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(40.0),
+    return Background(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color.fromRGBO(9, 9, 9, 1),
+            ),
+            onPressed: () {
+              // Aquí puedes agregar la lógica para manejar la acción de retroceso
+              Navigator.pop(context);
+            },
           ),
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(40.0),
+            ),
+          ),
+          title: Row(children: [
+            Text(
+              'Report details',
+              style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+            ),
+          ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
+          centerTitle: true,
         ),
-        title: Row(children: [
-          Text(
-            'Report details',
-            style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-          ),
-        ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
-        centerTitle: true,
-      ),
-      body: Background(
-        child: reportService.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        child: Container(
-                          child: buildListView(context),
+        body: Background(
+          child: reportService.isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          child: Container(
+                            child: buildListView(context),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+        ),
       ),
     );
   }
