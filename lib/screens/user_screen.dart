@@ -139,100 +139,102 @@ class _UserScreenState extends State<UserScreen> {
     //     print(articles[i]);
     //   }
     // }
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color.fromRGBO(184, 237, 243, 1),
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(40.0),
+    return Background(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(40.0),
+            ),
           ),
+          title: Row(children: [
+            IconButton(
+              icon: const Icon(Icons.login_outlined),
+              color: Color.fromRGBO(0, 0, 0, 1),
+              onPressed: () {
+                Provider.of<AuthService>(context, listen: false).logout();
+                Navigator.pushReplacementNamed(context, 'login');
+              },
+            ),
+            Text(
+              'Appointments',
+              style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+            ),
+            Text(
+              '$cont',
+              style: const TextStyle(
+                  fontSize: 30, color: Color.fromRGBO(0, 0, 0, 1)),
+            ),
+          ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
+          centerTitle: true,
         ),
-        title: Row(children: [
-          IconButton(
-            icon: const Icon(Icons.login_outlined),
-            color: Color.fromRGBO(0, 0, 0, 1),
-            onPressed: () {
-              Provider.of<AuthService>(context, listen: false).logout();
-              Navigator.pushReplacementNamed(context, 'login');
-            },
-          ),
-          Text(
-            'Appointments',
-            style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-          ),
-          Text(
-            '$cont',
-            style: const TextStyle(
-                fontSize: 30, color: Color.fromRGBO(0, 0, 0, 1)),
-          ),
-        ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
-        centerTitle: true,
-      ),
-      body: Background(
-        child: appointmentService.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border:
-                                  Border.all(color: Colors.blueGrey, width: 1),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextField(
-                            onChanged: (value) => _runFilter(value),
-                            decoration: const InputDecoration(
-                              labelText: '    Search',
-                              suffixIcon: Icon(Icons.search),
+        body: Background(
+          child: appointmentService.isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 1.1,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.blueGrey, width: 1),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: TextField(
+                              onChanged: (value) => _runFilter(value),
+                              decoration: const InputDecoration(
+                                labelText: '    Search',
+                                suffixIcon: Icon(Icons.search),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        child: Container(
-                          child: buildListView(context),
+                        SizedBox(
+                          child: Container(
+                            child: buildListView(context),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-      ),
-      floatingActionButton: RawMaterialButton(
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, 'newappointmentscreen');
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
         ),
-        fillColor: Colors.blue,
-        child: Icon(Icons.add_to_photos_rounded, color: Colors.white),
-        constraints: BoxConstraints.tightFor(
-          width: 40.0,
-          height: 40.0,
+        floatingActionButton: RawMaterialButton(
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'newappointmentscreen');
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          fillColor: Colors.blue,
+          child: Icon(Icons.add_to_photos_rounded, color: Colors.white),
+          constraints: BoxConstraints.tightFor(
+            width: 40.0,
+            height: 40.0,
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.all_inbox_rounded), label: 'Appointments'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
-        ],
-        currentIndex: 0, //New
-        onTap: _onItemTapped,
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.all_inbox_rounded), label: 'Appointments'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_pin_circle_outlined), label: 'Data'),
+          ],
+          currentIndex: 0, //New
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
