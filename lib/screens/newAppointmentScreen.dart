@@ -164,7 +164,7 @@ class __Form extends State<_Form> {
                   onChanged: (time) {
                     List<String> h = time.toString().split(" ");
                     List<String> h2 = h[1].split(".");
-                    print(h2[0]);
+
                     appointmentForm.hour = h2[0];
                     // Puedes hacer algo con la hora seleccionada aquí
                   },
@@ -241,9 +241,9 @@ class __Form extends State<_Form> {
 
                         int min = 0;
                         int max = 0;
-                        print(managers.length);
+
                         // managers.forEach((element) {
-                        //   print(element.id);
+                        //
                         // });
                         if (managers.length > 0) {
                           max = managers.length - 1;
@@ -251,10 +251,9 @@ class __Form extends State<_Form> {
                         }
 
                         Random random = Random();
-                        print(min.toString() + ' ' + max.toString());
+
                         int randomInt = min + random.nextInt(max - min + 1);
-                        print(randomInt);
-                        print(managers[randomInt].id!);
+
                         final String? errorMessage =
                             await appointmentService.create(
                                 da[0],

@@ -54,11 +54,7 @@ class ReportScreenState extends State<ReportScreen> {
   @override
   void initState() {
     super.initState();
-    // ignore: avoid_print
-    print('iniciando');
     getAppointments();
-    //getUser();
-    // getFamilies();
   }
 
   void _runFilter(String enteredKeyword) {
@@ -87,13 +83,6 @@ class ReportScreenState extends State<ReportScreen> {
       }
     }
 
-    // final articleService = Provider.of<ArticleService>(context, listen: false);
-    // articles = articleService.articles.cast<ArticleData>();
-    // for (int i = 0; i < articles.length; i++) {
-    //   if (articles[i].deleted == 1) {
-    //     print(articles[i]);
-    //   }
-    // }
     return Background(
       child: Scaffold(
         resizeToAvoidBottomInset: false,

@@ -149,7 +149,6 @@ class ReportService extends ChangeNotifier {
     );
     isLoading = false;
     notifyListeners();
-    print(resp.statusCode);
     if (resp.statusCode == 200) {}
   }
 }

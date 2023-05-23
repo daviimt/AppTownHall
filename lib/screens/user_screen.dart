@@ -50,34 +50,23 @@ class _UserScreenState extends State<UserScreen> {
   Future getDepartments() async {
     await departmentService.getListDepartments();
     setState(() {
-      print('ENTRA');
       departmentsList = departmentService.departments;
-      print(departmentsList);
 
       List<int> departmentsListId = [];
       departmentsList.forEach((element) {
         departmentsListId.add(element.id!);
       });
-      print(departmentsListId);
 
       List<String> departmentNames = [];
 
-      print("BUCLE APPOINTMENT");
-      print(appointmentBuscar.length);
       for (int i = 0; i < appointmentBuscar.length; i++) {
-        print("APPOINTMENT ID: " + appointmentBuscar[i].id.toString());
-        print(departmentsListId.contains(appointmentBuscar[i].id));
-        print(appointmentBuscar[i].id);
         if (!departmentsListId.contains(appointmentBuscar[i].id)) {
-          print("BUCLE DEPARTMENT");
-
 //VOY POR AQUI
           for (int j = 0; j < departmentsList.length; j++) {
             departmentNames.add(departmentsList[j].name!);
           }
         }
       }
-      print('Lista' + departmentNames.toString());
 
       departmentsName = departmentNames;
     });
@@ -102,7 +91,6 @@ class _UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
 
-    print('iniciando');
     getAppointments();
   }
 
@@ -136,7 +124,7 @@ class _UserScreenState extends State<UserScreen> {
     // articles = articleService.articles.cast<ArticleData>();
     // for (int i = 0; i < articles.length; i++) {
     //   if (articles[i].deleted == 1) {
-    //     print(articles[i]);
+
     //   }
     // }
     return Background(
@@ -252,8 +240,6 @@ class _UserScreenState extends State<UserScreen> {
       ),
       itemCount: appointmentBuscar.length,
       itemBuilder: (BuildContext context, index) {
-        print("ESTO ES EL ID");
-        print(appointmentBuscar[index].idDepartment!);
         //getDepartment(appointmentBuscar[index].idDepartment!);
         return Stack(
           children: [
