@@ -13,6 +13,7 @@ class UserService extends ChangeNotifier {
   final String _baseUrl = '192.168.1.42:8080';
   bool isLoading = true;
   String usuario = "";
+  List<User> managers = [];
   final storage = const FlutterSecureStorage();
 
   getUser() async {
@@ -102,6 +103,40 @@ class UserService extends ChangeNotifier {
         "Authorization": "Bearer $token"
       },
     );
+  }
+
+  Future<List> getManagers() async {
+    managers.clear();
+    isLoading = true;
+    notifyListeners();
+    final url = Uri.http(_baseUrl, '/manager/managers');
+    String? token = await AuthService().readToken();
+
+    final resp = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+    final List<dynamic> decodedResp = json.decode(resp.body);
+    List<User> managersList = decodedResp
+        .map((e) => User(
+              id: e['id'],
+              dni: e['dni'],
+              name: e['name'],
+              surname: e['surname'],
+              username: e['username'],
+              password: e['password'],
+              role: e['role'],
+              enabled: e['enabled'],
+              idDepartment: e['idDepartment'],
+              token: e['token'],
+            ))
+        .toList();
+    managers = managersList;
+
+    isLoading = false;
+    notifyListeners();
+
+    return managersList;
   }
 
   Future postDeactivate(String id) async {

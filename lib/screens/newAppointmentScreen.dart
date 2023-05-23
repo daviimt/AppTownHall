@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -71,6 +73,7 @@ class __Form extends State<_Form> {
   final userService = UserService();
   User user = User();
   List<Department> departments = [];
+  List<User> managers = [];
   final departmentService = DepartmentService();
 
   DateTime selectedDate =
@@ -98,6 +101,13 @@ class __Form extends State<_Form> {
     });
   }
 
+  Future getManagers() async {
+    await userService.getManagers();
+    setState(() {
+      managers = userService.managers;
+    });
+  }
+
   Future getUser() async {
     await userService.getUser();
     User us = await userService.getUser();
@@ -111,6 +121,7 @@ class __Form extends State<_Form> {
     super.initState();
     getUser();
     getDepartments();
+    getManagers();
   }
 
   @override
@@ -228,12 +239,28 @@ class __Form extends State<_Form> {
                         List<String> da =
                             appointmentForm.date.toString().split(" ");
 
+                        int min = 0;
+                        int max = 0;
+                        print(managers.length);
+                        // managers.forEach((element) {
+                        //   print(element.id);
+                        // });
+                        if (managers.length > 0) {
+                          max = managers.length - 1;
+                          min = 1;
+                        }
+
+                        Random random = Random();
+                        print(min.toString() + ' ' + max.toString());
+                        int randomInt = min + random.nextInt(max - min + 1);
+                        print(randomInt);
+                        print(managers[randomInt].id!);
                         final String? errorMessage =
                             await appointmentService.create(
                                 da[0],
                                 appointmentForm.hour,
                                 appointmentForm.idDepartment.toString(),
-                                55,
+                                managers[randomInt].id!,
                                 idUser);
 
                         if (errorMessage == '201') {
