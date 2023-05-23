@@ -80,7 +80,7 @@ class __Form extends State<_Form> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(), // Fecha inicial del selector
-      firstDate: DateTime(2020), // Fecha más antigua permitida
+      firstDate: DateTime.now(), // Fecha más antigua permitida
       lastDate: DateTime(2025), // Fecha más reciente permitida
     );
 
@@ -135,7 +135,7 @@ class __Form extends State<_Form> {
                   DatePicker.showDatePicker(context,
                       showTitleActions: true,
                       minTime: DateTime.now(),
-                      maxTime: DateTime(2070, 6, 7),
+                      maxTime: DateTime.now().add(Duration(days: 365)),
                       onChanged: (value) => appointmentForm.date = value,
                       currentTime: DateTime.now(),
                       locale: LocaleType.es);
