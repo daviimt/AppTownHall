@@ -199,28 +199,12 @@ class __Form extends State<_Form> {
                   visible: !_isVisible('12:00'),
                   child: buildRoundButton('12:00', appointmentForm)),
             ]),
-            TextButton(
-              onPressed: () {
-                DatePicker.showTimePicker(
-                  context,
-                  showTitleActions: true,
-                  onChanged: (time) {
-                    List<String> h = time.toString().split(" ");
-                    List<String> h2 = h[1].split(".");
-
-                    appointmentForm.hour = h2[0];
-                    // Puedes hacer algo con la hora seleccionada aquí
-                  },
-                  showSecondsColumn: false,
-                  currentTime: DateTime.now(),
-                  locale: LocaleType.es,
-                );
-              },
-              child: Text(
-                'Hour',
-                style: TextStyle(color: Colors.blue),
-              ),
-            ),
+            SizedBox(height: 30),
+            Visibility(
+                visible: appointmentForm.hour != null,
+                child: Text(appointmentForm.date.toString().substring(0, 10) +
+                    '  ' +
+                    appointmentForm.hour.toString())),
             SizedBox(height: 30),
             DropdownButtonFormField<Department>(
               decoration: InputDecorations.authInputDecoration(
