@@ -260,7 +260,7 @@ class __Form extends State<_Form> {
                 onPressed: appointmentForm.isLoading
                     ? null
                     : () async {
-                        if (appointmentForm.date.isUtc ||
+                        if (appointmentForm.date == DateTime(0) ||
                             appointmentForm.hour.isEmpty ||
                             appointmentForm.idDepartment == 0) {
                           customToast("Fiels can't be empty", context);

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppointmentFormProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  DateTime date = DateTime(0, 0, 0);
+  DateTime date = DateTime(0);
   String hour = '';
   int idDepartment = 0;
 
