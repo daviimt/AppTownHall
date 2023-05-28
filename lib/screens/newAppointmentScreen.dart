@@ -203,21 +203,31 @@ class __Form extends State<_Form> {
               },
             ),
             SizedBox(height: 30),
-            TextButton(
-                onPressed: () {
-                  DatePicker.showDatePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime.now(),
-                      maxTime: DateTime.now().add(Duration(days: 365)),
-                      onChanged: (value) {
-                    appointmentForm.date = value;
-                    _selectDate(context, value, appointmentForm.idDepartment);
-                  }, currentTime: DateTime.now(), locale: LocaleType.es);
-                },
-                child: Text(
-                  'Date',
-                  style: TextStyle(color: Colors.blue),
-                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime.now(),
+                          maxTime: DateTime.now().add(Duration(days: 365)),
+                          onChanged: (value) {
+                        appointmentForm.date = value;
+                        _selectDate(
+                            context, value, appointmentForm.idDepartment);
+                      }, currentTime: DateTime.now(), locale: LocaleType.es);
+                    },
+                    child: Text(
+                      'Date',
+                      style: TextStyle(color: Colors.blue),
+                    )),
+                Visibility(
+                    visible: appointmentForm.hour != null,
+                    child:
+                        Text(appointmentForm.date.toString().substring(0, 10))),
+              ],
+            ),
             SizedBox(height: 30),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Visibility(
@@ -234,11 +244,6 @@ class __Form extends State<_Form> {
                   child: buildRoundButton('12:00', appointmentForm)),
             ]),
             SizedBox(height: 30),
-            Visibility(
-                visible: appointmentForm.hour != null,
-                child: Text(appointmentForm.date.toString().substring(0, 10) +
-                    '  ' +
-                    appointmentForm.hour.toString())),
             SizedBox(height: 30),
             MaterialButton(
                 shape: RoundedRectangleBorder(
