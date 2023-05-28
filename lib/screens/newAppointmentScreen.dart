@@ -83,25 +83,32 @@ class __Form extends State<_Form> {
   List<String> hoursOcu = [];
   var appointmentForm = null;
 
-  Future<void> _selectDate(BuildContext context, DateTime select) async {
+  Future<void> _selectDate(
+      BuildContext context, DateTime select, int id) async {
     List<String> hours = ['09:00', '10:00', '11:00', '12:00'];
+    List<Appointment> appDep = [];
     List<Appointment> app = [];
     List<String> disps = [];
     List<String> fechaS = select.toString().split(' ');
-    print(fechaS[0]);
-    print('Fecha list');
+
     for (int i = 0; i < appointments.length; i++) {
-      List<String> fechaD = appointments[i].date.toString().split('T');
-      print(fechaD[0]);
-      if (fechaD[0] == fechaS[0]) {
-        app.add(appointments[i]);
+      if (appointments[i].idDepartment == id) {
+        appDep.add(appointments[i]);
       }
     }
+    print(appDep);
+    for (int i = 0; i < appDep.length; i++) {
+      List<String> fechaD = appDep[i].date.toString().split('T');
+
+      if (fechaD[0] == fechaS[0]) {
+        app.add(appDep[i]);
+      }
+    }
+
     for (int f = 0; f < app.length; f++) {
       String h = app[f].hour!.substring(0, 5);
-      print(h);
+
       for (int i = 0; i < hours.length; i++) {
-        print(hours.contains(h));
         if (hours.contains(h)) {
           disps.add(h);
           break;
@@ -170,6 +177,32 @@ class __Form extends State<_Form> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
+            DropdownButtonFormField<Department>(
+              decoration: InputDecorations.authInputDecoration(
+                  prefixIcon: Icons.view_week_outlined,
+                  hintText: '',
+                  labelText: 'Department'),
+              // value: selectedItem,
+              items: options
+                  .map(
+                    (depart) => DropdownMenuItem(
+                      value: depart,
+                      child: Text(depart.name.toString()),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                appointmentForm.idDepartment = (value?.id)!;
+              },
+              validator: (cicle) {
+                if (cicle != null) {
+                  return null;
+                } else {
+                  return 'Select a companie';
+                }
+              },
+            ),
+            SizedBox(height: 30),
             TextButton(
                 onPressed: () {
                   DatePicker.showDatePicker(context,
@@ -178,7 +211,7 @@ class __Form extends State<_Form> {
                       maxTime: DateTime.now().add(Duration(days: 365)),
                       onChanged: (value) {
                     appointmentForm.date = value;
-                    _selectDate(context, value);
+                    _selectDate(context, value, appointmentForm.idDepartment);
                   }, currentTime: DateTime.now(), locale: LocaleType.es);
                 },
                 child: Text(
@@ -206,33 +239,6 @@ class __Form extends State<_Form> {
                 child: Text(appointmentForm.date.toString().substring(0, 10) +
                     '  ' +
                     appointmentForm.hour.toString())),
-            SizedBox(height: 30),
-            DropdownButtonFormField<Department>(
-              decoration: InputDecorations.authInputDecoration(
-                  prefixIcon: Icons.view_week_outlined,
-                  hintText: '',
-                  labelText: 'Department'),
-              // value: selectedItem,
-              items: options
-                  .map(
-                    (depart) => DropdownMenuItem(
-                      value: depart,
-                      child: Text(depart.name.toString()),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                appointmentForm.idDepartment = (value?.id)!;
-              },
-              validator: (cicle) {
-                if (cicle != null) {
-                  return null;
-                } else {
-                  return 'Select a companie';
-                }
-              },
-            ),
-            SizedBox(height: 30),
             SizedBox(height: 30),
             MaterialButton(
                 shape: RoundedRectangleBorder(
