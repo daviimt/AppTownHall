@@ -71,27 +71,47 @@ class _Form extends StatefulWidget {
 
 class __Form extends State<_Form> {
   final userService = UserService();
-  User user = User();
+  final appointmentService = AppointmentService();
+  final departmentService = DepartmentService();
   List<Department> departments = [];
   List<User> managers = [];
-  final departmentService = DepartmentService();
-
+  List<Appointment> appointments = [];
+  User user = User();
+  String selectedButton = '';
   DateTime selectedDate =
       DateTime(10); // Variable para almacenar la fecha seleccionada
+  List<String> hoursOcu = [];
+  var appointmentForm = null;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(), // Fecha inicial del selector
-      firstDate: DateTime.now(), // Fecha más antigua permitida
-      lastDate: DateTime(2025), // Fecha más reciente permitida
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
+  Future<void> _selectDate(BuildContext context, DateTime select) async {
+    List<String> hours = ['09:00', '10:00', '11:00', '12:00'];
+    List<Appointment> app = [];
+    List<String> disps = [];
+    List<String> fechaS = select.toString().split(' ');
+    print(fechaS[0]);
+    print('Fecha list');
+    for (int i = 0; i < appointments.length; i++) {
+      List<String> fechaD = appointments[i].date.toString().split('T');
+      print(fechaD[0]);
+      if (fechaD[0] == fechaS[0]) {
+        app.add(appointments[i]);
+      }
     }
+    for (int f = 0; f < app.length; f++) {
+      String h = app[f].hour!.substring(0, 5);
+      print(h);
+      for (int i = 0; i < hours.length; i++) {
+        print(hours.contains(h));
+        if (hours.contains(h)) {
+          disps.add(h);
+          break;
+        }
+      }
+    }
+    setState(() {
+      print('disponibles' + disps.toString());
+      hoursOcu = disps;
+    });
   }
 
   Future getDepartments() async {
@@ -105,6 +125,13 @@ class __Form extends State<_Form> {
     await userService.getManagers();
     setState(() {
       managers = userService.managers;
+    });
+  }
+
+  Future getAppointments() async {
+    await appointmentService.getListAppointments();
+    setState(() {
+      appointments = appointmentService.appointments;
     });
   }
 
@@ -122,6 +149,7 @@ class __Form extends State<_Form> {
     getUser();
     getDepartments();
     getManagers();
+    getAppointments();
   }
 
   @override
@@ -147,15 +175,30 @@ class __Form extends State<_Form> {
                       showTitleActions: true,
                       minTime: DateTime.now(),
                       maxTime: DateTime.now().add(Duration(days: 365)),
-                      onChanged: (value) => appointmentForm.date = value,
-                      currentTime: DateTime.now(),
-                      locale: LocaleType.es);
+                      onChanged: (value) {
+                    appointmentForm.date = value;
+                    _selectDate(context, value);
+                  }, currentTime: DateTime.now(), locale: LocaleType.es);
                 },
                 child: Text(
                   'Date',
                   style: TextStyle(color: Colors.blue),
                 )),
             SizedBox(height: 30),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Visibility(
+                  visible: !_isVisible('09:00'),
+                  child: buildRoundButton('09:00', appointmentForm)),
+              Visibility(
+                  visible: !_isVisible('10:00'),
+                  child: buildRoundButton('10:00', appointmentForm)),
+              Visibility(
+                  visible: !_isVisible('11:00'),
+                  child: buildRoundButton('11:00', appointmentForm)),
+              Visibility(
+                  visible: !_isVisible('12:00'),
+                  child: buildRoundButton('12:00', appointmentForm)),
+            ]),
             TextButton(
               onPressed: () {
                 DatePicker.showTimePicker(
@@ -279,6 +322,50 @@ class __Form extends State<_Form> {
         ),
       ),
     );
+  }
+
+  Widget buildRoundButton(
+      String buttonNumber, AppointmentFormProvider _appointmentForm) {
+    bool isSelected = selectedButton == buttonNumber;
+    bool activate = hoursOcu.contains(selectedButton);
+
+    return InkWell(
+      enableFeedback: activate,
+      onTap: () {
+        setState(() {
+          selectedButton = buttonNumber;
+          _appointmentForm.hour = selectedButton;
+          print(_appointmentForm.hour);
+          appointmentForm = _appointmentForm;
+        });
+      },
+      child: Container(
+        width: 60,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: isSelected ? Colors.blue : Colors.grey,
+        ),
+        child: Center(
+          child: Text(
+            buttonNumber.toString(),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  bool _isVisible(String _hour) {
+    print('__VISIBLE__');
+    print('horaa ' + _hour);
+    print('horas ' + hoursOcu.toString());
+    bool activate = hoursOcu.contains(_hour);
+    print(activate);
+    return activate;
   }
 
   void customToast(String message, BuildContext context) {
