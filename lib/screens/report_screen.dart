@@ -130,23 +130,6 @@ class ReportScreenState extends State<ReportScreen> {
                         ),
                         SizedBox(
                           child: Container(
-                            width: MediaQuery.of(context).size.width / 1.1,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.blueGrey, width: 1),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: TextField(
-                              onChanged: (value) => _runFilter(value),
-                              decoration: const InputDecoration(
-                                labelText: '    Search',
-                                suffixIcon: Icon(Icons.search),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          child: Container(
                             child: buildListView(context),
                           ),
                         ),

@@ -94,21 +94,6 @@ class _UserScreenState extends State<UserScreen> {
     getAppointments();
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<Appointment> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = appointments;
-    } else {
-      results = appointments
-          .where((x) =>
-              x.date!.toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-    setState(() {
-      // articlesBuscar = results;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
@@ -171,23 +156,6 @@ class _UserScreenState extends State<UserScreen> {
                       children: [
                         const SizedBox(
                           height: 20,
-                        ),
-                        SizedBox(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 1.1,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.blueGrey, width: 1),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: TextField(
-                              onChanged: (value) => _runFilter(value),
-                              decoration: const InputDecoration(
-                                labelText: '    Search',
-                                suffixIcon: Icon(Icons.search),
-                              ),
-                            ),
-                          ),
                         ),
                         SizedBox(
                           child: Container(

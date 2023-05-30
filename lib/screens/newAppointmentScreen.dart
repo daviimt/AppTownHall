@@ -244,7 +244,6 @@ class __Form extends State<_Form> {
                   child: buildRoundButton('12:00', appointmentForm)),
             ]),
             SizedBox(height: 30),
-            SizedBox(height: 30),
             MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -337,7 +336,7 @@ class __Form extends State<_Form> {
         });
       },
       child: Container(
-        width: 60,
+        width: 65,
         height: 50,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
