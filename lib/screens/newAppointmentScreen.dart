@@ -192,7 +192,9 @@ class __Form extends State<_Form> {
                   )
                   .toList(),
               onChanged: (value) {
-                appointmentForm.idDepartment = (value?.id)!;
+                setState(() {
+                  appointmentForm.idDepartment = (value?.id)!;
+                });
               },
               validator: (cicle) {
                 if (cicle != null) {
@@ -203,46 +205,53 @@ class __Form extends State<_Form> {
               },
             ),
             SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                    onPressed: () {
-                      DatePicker.showDatePicker(context,
-                          showTitleActions: true,
-                          minTime: DateTime.now(),
-                          maxTime: DateTime.now().add(Duration(days: 365)),
-                          onChanged: (value) {
-                        appointmentForm.date = value;
-                        _selectDate(
-                            context, value, appointmentForm.idDepartment);
-                      }, currentTime: DateTime.now(), locale: LocaleType.es);
-                    },
-                    child: Text(
-                      'Date',
-                      style: TextStyle(color: Colors.blue),
-                    )),
-                Visibility(
-                    visible: appointmentForm.hour != null,
-                    child:
-                        Text(appointmentForm.date.toString().substring(0, 10))),
-              ],
+            Visibility(
+              visible: appointmentForm.idDepartment != 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime.now(),
+                            maxTime: DateTime.now().add(Duration(days: 365)),
+                            onChanged: (value) {
+                          appointmentForm.date = value;
+                          _selectDate(
+                              context, value, appointmentForm.idDepartment);
+                        }, currentTime: DateTime.now(), locale: LocaleType.es);
+                      },
+                      child: Text(
+                        'Date',
+                        style: TextStyle(color: Colors.blue),
+                      )),
+                  Visibility(
+                      visible: appointmentForm.hour != null,
+                      child: Text(
+                          appointmentForm.date.toString().substring(0, 10))),
+                ],
+              ),
             ),
             SizedBox(height: 30),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Visibility(
-                  visible: !_isVisible('09:00'),
-                  child: buildRoundButton('09:00', appointmentForm)),
-              Visibility(
-                  visible: !_isVisible('10:00'),
-                  child: buildRoundButton('10:00', appointmentForm)),
-              Visibility(
-                  visible: !_isVisible('11:00'),
-                  child: buildRoundButton('11:00', appointmentForm)),
-              Visibility(
-                  visible: !_isVisible('12:00'),
-                  child: buildRoundButton('12:00', appointmentForm)),
-            ]),
+            Visibility(
+              visible: appointmentForm.date != DateTime(0),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Visibility(
+                    visible: !_isVisible('09:00'),
+                    child: buildRoundButton('09:00', appointmentForm)),
+                Visibility(
+                    visible: !_isVisible('10:00'),
+                    child: buildRoundButton('10:00', appointmentForm)),
+                Visibility(
+                    visible: !_isVisible('11:00'),
+                    child: buildRoundButton('11:00', appointmentForm)),
+                Visibility(
+                    visible: !_isVisible('12:00'),
+                    child: buildRoundButton('12:00', appointmentForm)),
+              ]),
+            ),
             SizedBox(height: 30),
             MaterialButton(
                 shape: RoundedRectangleBorder(

@@ -57,21 +57,6 @@ class ReportScreenState extends State<ReportScreen> {
     getAppointments();
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<Report> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = appointments;
-    } else {
-      results = appointments
-          .where((x) =>
-              x.data!.toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-    setState(() {
-      // articlesBuscar = results;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
