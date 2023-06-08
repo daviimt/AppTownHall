@@ -158,35 +158,35 @@ class ReportScreenAloneState extends State<ReportScreenAlone> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 59, 156, 236),
-                shape: BoxShape.circle,
-              ),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(71, 240, 255, 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.delete),
-                  color: Colors.black,
-                  onPressed: () async {
-                    reportService.deleteReport('${appointmentBuscar.id}');
-                    Navigator.pushReplacementNamed(
-                        context, 'reportscreenAlone');
-                  },
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 10,
+          //   right: 10,
+          //   child: Container(
+          //     width: 40,
+          //     height: 40,
+          //     decoration: BoxDecoration(
+          //       color: Color.fromARGB(255, 59, 156, 236),
+          //       shape: BoxShape.circle,
+          //     ),
+          //     child: Container(
+          //       width: 40,
+          //       height: 40,
+          //       decoration: BoxDecoration(
+          //         color: Color.fromRGBO(71, 240, 255, 1),
+          //         borderRadius: BorderRadius.circular(10),
+          //       ),
+          //       child: IconButton(
+          //         icon: Icon(Icons.delete),
+          //         color: Colors.black,
+          //         onPressed: () async {
+          //           reportService.deleteReport('${appointmentBuscar.id}');
+          //           Navigator.pushReplacementNamed(
+          //               context, 'reportscreenAlone');
+          //         },
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

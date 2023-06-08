@@ -236,7 +236,7 @@ class _UserScreenState extends State<UserScreen> {
                       children: [
                         Text(
                           //department.name.toString(),
-                          'name',
+                          '${appointmentBuscar[index].id != null ? appointmentBuscar[index].id : ''}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
