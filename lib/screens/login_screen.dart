@@ -112,6 +112,7 @@ class _LoginForm extends StatelessWidget {
                         if (spliter?[1] == '200') {
                           if (spliter?[2] == 'false') {
                             customToast('User isn\'t enabled', context);
+                            loginForm.isLoading = false;
                           } else {
                             if (spliter?[0] == 'ROLE_MANAGER') {
                               Navigator.pushReplacementNamed(

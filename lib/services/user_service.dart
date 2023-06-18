@@ -20,6 +20,8 @@ class UserService extends ChangeNotifier {
     String? token = await AuthService().readToken();
     String? id = await AuthService().readId();
 
+    print(token);
+    print(id);
     final url = Uri.http(_baseUrl, '/all/$id');
     isLoading = true;
     notifyListeners();
@@ -60,49 +62,6 @@ class UserService extends ChangeNotifier {
         token: tokenUser);
 
     return us;
-  }
-
-  getUserId() async {
-    String? token = await AuthService().readToken();
-    String? id = await AuthService().readId();
-
-    final url = Uri.http(_baseUrl, '/public/api/user/$id');
-    isLoading = true;
-    notifyListeners();
-    final resp = await http.get(
-      url,
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token"
-      },
-    );
-    final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    await storage.write(key: 'id', value: decodedResp['data']['id'].toString());
-    isLoading = false;
-    notifyListeners();
-    return decodedResp['data']['id'].toString();
-  }
-
-  // ignore: non_constant_identifier_names
-  readCompany_id() async {
-    return await storage.read(key: 'company_id') ?? '';
-  }
-
-  Future postActivate(String id) async {
-    final url = Uri.http(_baseUrl, '/public/api/activate', {'user_id': id});
-    String? token = await AuthService().readToken();
-    isLoading = true;
-    notifyListeners();
-    // ignore: unused_local_variable
-    final resp = await http.post(
-      url,
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token"
-      },
-    );
   }
 
   Future<List> getManagers() async {
@@ -155,22 +114,6 @@ class UserService extends ChangeNotifier {
     );
   }
 
-  Future postDelete(String id) async {
-    final url = Uri.http(_baseUrl, '/public/api/delete', {'user_id': id});
-    String? token = await AuthService().readToken();
-    isLoading = true;
-    notifyListeners();
-    // ignore: unused_local_variable
-    final resp = await http.post(
-      url,
-      headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        "Authorization": "Bearer $token"
-      },
-    );
-  }
-
 //UPDATE USER
   Future<String?> update(
     String username,
@@ -209,31 +152,5 @@ class UserService extends ChangeNotifier {
     } else {
       return (resp.statusCode.toString());
     }
-  }
-}
-
-class GetDepartments extends ChangeNotifier {
-  final String _baseUrl = 'semillero.allsites.es';
-
-  List<Department> getAllDepartment = [];
-
-  GetDepartments() {
-    getDepartmentsName();
-  }
-
-  getDepartmentsName() async {
-    var url = Uri.http(_baseUrl, '/public/api/companies');
-
-    final encodedFormData = utf8.encode(json.encode(""));
-    final resp = await http.put(url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: encodedFormData);
-    final Map<String, dynamic> decodedResp = json.decode(resp.body);
-
-    getAllDepartment = decodedResp["data"]["name"];
-    notifyListeners();
   }
 }
