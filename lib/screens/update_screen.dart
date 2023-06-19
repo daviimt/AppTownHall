@@ -162,6 +162,8 @@ class __LoginForm extends State<_LoginForm> {
                 onPressed: loginForm.isLoading
                     ? null
                     : () async {
+                        String dniPattern = r'^\d{8}[A-Za-z]$';
+                        RegExp regex = RegExp(dniPattern);
                         if (loginForm.dni.isEmpty ||
                             loginForm.username.isEmpty ||
                             loginForm.password.isEmpty ||
@@ -169,33 +171,40 @@ class __LoginForm extends State<_LoginForm> {
                             loginForm.surname.isEmpty) {
                           customToast("Fiels can't be empty", context);
                         } else {
-                          FocusScope.of(context).unfocus();
-                          final authService =
-                              Provider.of<AuthService>(context, listen: false);
-
-                          if (!loginForm.isValidForm()) return;
-
-                          loginForm.isLoading = true;
-
-                          // TODO: validar si el login es correcto
-                          final String? errorMessage = await userService.update(
-                              loginForm.username,
-                              loginForm.password,
-                              loginForm.dni,
-                              loginForm.name,
-                              loginForm.surname);
-
-                          if (errorMessage == '201') {
-                            customToast('Updated', context);
-                            Navigator.pushReplacementNamed(
-                                context, 'userscreen');
-                          } else if (errorMessage == '500') {
-                            // TODO: mostrar error en pantalla
-                            customToast('User registered', context);
-
-                            loginForm.isLoading = false;
+                          if (!regex.hasMatch(loginForm.dni)) {
+                            customToast(
+                                "El dni no cumple los parametros", context);
                           } else {
-                            customToast('Server error', context);
+                            FocusScope.of(context).unfocus();
+                            final authService = Provider.of<AuthService>(
+                                context,
+                                listen: false);
+
+                            if (!loginForm.isValidForm()) return;
+
+                            loginForm.isLoading = true;
+
+                            // TODO: validar si el login es correcto
+                            final String? errorMessage =
+                                await userService.update(
+                                    loginForm.username,
+                                    loginForm.password,
+                                    loginForm.dni,
+                                    loginForm.name,
+                                    loginForm.surname);
+
+                            if (errorMessage == '201') {
+                              customToast('Updated', context);
+                              Navigator.pushReplacementNamed(
+                                  context, 'userscreen');
+                            } else if (errorMessage == '500') {
+                              // TODO: mostrar error en pantalla
+                              customToast('User registered', context);
+
+                              loginForm.isLoading = false;
+                            } else {
+                              customToast('Server error', context);
+                            }
                           }
                         }
                       })
