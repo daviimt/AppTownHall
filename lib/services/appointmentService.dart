@@ -6,7 +6,7 @@ import 'package:townhall/models/appointment.dart';
 import 'services.dart';
 
 class AppointmentService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.42:8080';
+  final String _baseUrl = '192.168.1.43:8080';
   bool isLoading = true;
   List<Appointment> appointments = [];
   String appointment = "";

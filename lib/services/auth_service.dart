@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.42:8080';
+  final String _baseUrl = '192.168.1.43:8080';
   final storage = const FlutterSecureStorage();
   bool isLoading = true;
   List<dynamic> Favs = [];
@@ -62,7 +62,7 @@ class AuthService extends ChangeNotifier {
     usernameGlobal = user;
     passwordGlobal = password;
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://192.168.1.42:8080/login'));
+        'POST', Uri.parse('http://192.168.1.43:8080/login'));
 
     request.fields['user'] = user;
     request.fields['password'] = password;

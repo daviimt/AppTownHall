@@ -179,11 +179,10 @@ class __Form extends State<_Form> {
                 onPressed: reportForm.isLoading
                     ? null
                     : () async {
-                        // if (reportForm.date.isUtc ||
-                        //     reportForm.hour.isEmpty ||
-                        //     reportForm.idDepartment == 0) {
-                        //   customToast("Fiels can't be empty", context);
-                        // } else {
+                        if (reportForm.data.isEmpty
+                            ) {
+                          customToast("Fiels can't be empty", context);
+                        } else {
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
@@ -202,6 +201,7 @@ class __Form extends State<_Form> {
                           customToast('Created', context);
                           Navigator.pushReplacementNamed(
                               context, 'managerscreen');
+                               reportForm.isLoading = false;
                         } else if (errorMessage == '500') {
                           // TODO: mostrar error en pantalla
                           customToast('User registered', context);
@@ -210,7 +210,7 @@ class __Form extends State<_Form> {
                         } else {
                           customToast('Server error', context);
                         }
-                        // }
+                         }
                       })
           ],
         ),

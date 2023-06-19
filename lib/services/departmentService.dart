@@ -7,7 +7,7 @@ import 'package:townhall/models/models.dart';
 import 'services.dart';
 
 class DepartmentService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.42:8080';
+  final String _baseUrl = '192.168.1.43:8080';
   bool isLoading = true;
   List<Department> departments = [];
   String departmentName = "";
