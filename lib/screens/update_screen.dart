@@ -172,8 +172,7 @@ class __LoginForm extends State<_LoginForm> {
                           customToast("Fiels can't be empty", context);
                         } else {
                           if (!regex.hasMatch(loginForm.dni)) {
-                            customToast(
-                                "El dni no cumple los parametros", context);
+                            customToast("Incorrect ID format", context);
                           } else {
                             FocusScope.of(context).unfocus();
                             final authService = Provider.of<AuthService>(
